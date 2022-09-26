@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Star rating</title>
+    <!--
+    사용자는 star-rating 요소의 내부 스타일은 지정하지 않고 global 스타일만 지정한다.
+    star-rating 요소의 위치나 크기 등은 지정할 수 있다.
+    -->
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400&display=block" rel="stylesheet" />
+    <link href="style.css" rel="stylesheet" />
+    <!--
+    사용자가 지정한 마지막 link 태그 뒤에 star-rating 요소 내부의 css를 JavaScript로 자동 추가한다.
+    <link href="star-rating/theme.css" rel="stylesheet" />
+    -->
+    <script type="module" src="app.js"></script>
+  </head>
+  <body>
+    <h1 class="title">Star rating</h1>
+
+    <div class="star-rating" data-max-rating="5"></div>
+    <div class="current-rating">current rating: <span>0</span></div>
+
+    <div class="star-rating" data-max-rating="3"></div>
+    <div class="current-rating">current rating: <span>0</span></div>
+  </body>
+</html>

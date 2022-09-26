@@ -1,0 +1,57 @@
+html,
+body {
+  font-family: 'Open Sans';
+  font-weight: 300;
+  height: 100%;
+  margin: 0;
+}
+/**
+ * 새로고침 시 nav 요소와 main 요소의 위치가 이동하는 움직임이 사용자에게 보이는 경우가 있다.
+ * 이를 방지하기 위해 미리 css에 body {visibility: 'hidden'}을 추가해 두었다.
+ * active 클래스가 추가된 이후에 body를 표시해서 새로고침 시 nav 요소와 main 요소의 위치가 이동하는 움직임이 사용자에게 보이지 않도록 한다.
+ */
+body {
+  visibility: hidden;
+}
+.container {
+  position: relative;
+  overflow-x: hidden; /* 가로 scroll bar 방지 */
+  width: 100%;
+  height: 100%;
+}
+nav,
+main {
+  position: absolute;
+  height: 100%;
+  transition: transform 0.5s;
+}
+nav {
+  left: -300px;
+  width: 300px;
+  background: #20232a;
+}
+main {
+  height: 100%;
+  padding: 20px;
+}
+.toggle {
+  font-size: 2em;
+  color: maroon;
+  cursor: pointer;
+  transition: transform 0.5s;
+}
+/* nav 요소 활성화 */
+nav.active,
+nav.active ~ main {
+  transform: translate3d(300px, 0, 0);
+}
+nav.active ~ main > .toggle {
+  transform: rotate(180deg);
+}
+/**
+ * 초기 렌더링 시에 불필요한 트랜지션을 방지하기 위해 초기 렌더링 시에 body 요소에 추가하고 렌더링이 완료하면 제거하여 정상적으로 트랜지션이 동작하도록 한다.
+ * https://css-tricks.com/transitions-only-after-page-load
+ */
+.preload * {
+  transition: none !important;
+}

@@ -1,0 +1,111 @@
+*,
+*::after,
+*::before {
+  box-sizing: border-box;
+}
+body {
+  font-family: 'Open Sans';
+  font-weight: 300;
+  background-color: #d6e1e5;
+}
+.title {
+  color: #db5b33;
+  font-weight: 300;
+  text-align: center;
+}
+.analog-clock {
+  position: relative;
+  width: 300px;
+  height: 300px;
+  background-color: #fff;
+  border-radius: 50%;
+  margin: 40px auto;
+  border: 5px solid white;
+  box-shadow: inset 2px 3px 8px 0 rgba(0, 0, 0, 0.1);
+}
+.analog-clock::after {
+  content: '';
+  width: 15px;
+  height: 15px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: black;
+  border-radius: 50%;
+  z-index: 100;
+}
+
+.analog-clock > .hand {
+  /* 자바스크립트로 --deg 값을 변경한다. */
+  --deg: 0;
+  position: absolute;
+  bottom: 50%;
+  left: 50%;
+  border: 1px solid white;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  transform-origin: bottom;
+  transform: translate3D(-50%, 0, 0) rotate(calc(var(--deg) * 1deg));
+  z-index: 10;
+}
+.analog-clock > .hand.second {
+  width: 4px;
+  height: 120px;
+  background-color: red;
+}
+.analog-clock > .hand.minute {
+  width: 6px;
+  height: 110px;
+  background-color: black;
+}
+.analog-clock > .hand.hour {
+  width: 8px;
+  height: 80px;
+  background-color: black;
+}
+
+/* .analog-clock과 같은 크기의 블록 요소를 회전시킨다. */
+.analog-clock > .time {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  padding: 10px;
+  font-size: 20px;
+  font-weight: bold;
+  text-align: center;
+}
+
+.analog-clock > .time.time1 {
+  transform: rotate(30deg);
+}
+.analog-clock > .time.time2 {
+  transform: rotate(60deg);
+}
+.analog-clock > .time.time3 {
+  transform: rotate(90deg);
+}
+.analog-clock > .time.time4 {
+  transform: rotate(120deg);
+}
+.analog-clock > .time.time5 {
+  transform: rotate(150deg);
+}
+.analog-clock > .time.time6 {
+  transform: rotate(180deg);
+}
+.analog-clock > .time.time7 {
+  transform: rotate(210deg);
+}
+.analog-clock > .time.time8 {
+  transform: rotate(240deg);
+}
+.analog-clock > .time.time9 {
+  transform: rotate(270deg);
+}
+.analog-clock > .time.time10 {
+  transform: rotate(300deg);
+}
+.analog-clock > .time.time11 {
+  transform: rotate(330deg);
+}

@@ -1,0 +1,19 @@
+@import url(https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css);
+
+.star-rating-container {
+  --main-color: #dcdcdc;
+  --hovered-color: #a7a7a7;
+  --selected-color: #db5b33;
+}
+/* 컴포넌트는 스스로 배치(위치, 크기, 여백 등)하지 않는다. */
+.star-rating-container > i {
+  font-size: 50px;
+  color: var(--main-color);
+  cursor: pointer;
+}
+.star-rating-container > i.hovered {
+  color: var(--hovered-color);
+}
+.star-rating-container > i.selected {
+  color: var(--selected-color);
+}

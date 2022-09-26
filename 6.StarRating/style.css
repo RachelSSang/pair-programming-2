@@ -1,0 +1,24 @@
+*,
+*::after,
+*::before {
+  box-sizing: border-box;
+}
+body {
+  font-family: 'Open Sans';
+  font-weight: 300;
+}
+.title {
+  color: #db5b33;
+  font-weight: 300;
+  text-align: center;
+}
+.star-rating {
+  width: 300px;
+  text-align: center;
+  margin: 0px auto;
+  user-select: none;
+}
+.current-rating {
+  margin: 20px;
+  text-align: center;
+}

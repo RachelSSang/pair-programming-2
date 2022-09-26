@@ -1,0 +1,70 @@
+:root {
+  --background-color: #c3c7ca;
+  --border-color: #e3e5e4;
+  --text-color: #34444f;
+}
+*,
+*::after,
+*::before {
+  box-sizing: border-box;
+}
+body {
+  font-family: 'Open Sans';
+  font-weight: 300;
+  color: #58666e;
+  background-color: #f0f3f4;
+}
+.title {
+  color: #db5b33;
+  font-weight: 300;
+  text-align: center;
+}
+#swappable {
+  width: 280px;
+  margin: 0 auto;
+}
+#swappable2 {
+  width: 280px;
+}
+.draggable-list {
+  border: 1px solid var(--border-color);
+  color: var(--text-color);
+  padding: 0;
+  list-style-type: none;
+}
+.draggable-list li {
+  background-color: #fff;
+  display: flex;
+  flex: 1;
+}
+.draggable-list li:not(:last-of-type) {
+  border-bottom: 1px solid var(--border-color);
+}
+.draggable-list .seq {
+  background-color: var(--background-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 60px;
+  width: 60px;
+}
+.draggable-list li.over .draggable {
+  background-color: #eaeaea;
+}
+.draggable-list .language-name {
+  margin: 0 20px 0 0;
+}
+.draggable-list li.right .language-name {
+  color: #2196f3;
+}
+.draggable-list li.wrong .language-name {
+  color: #ff3838;
+}
+.draggable {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 15px 24px;
+  flex: 1;
+}
