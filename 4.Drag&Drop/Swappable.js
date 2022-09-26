@@ -5,12 +5,12 @@ const languages = ['JavaScript', 'Java', 'Python', 'CSS', 'PHP', 'Ruby', 'C++', 
 
 const Swappable = $container => {
   // const shuffledLanguages = languages.sort(() => 0.5 - Math.random());
-  const shuffledLanguages = [];
+  const shuffledLanguages = [...languages];
   for (let i = 0; i < languages.length; i++) {
     let j = Math.floor(Math.random() * (i + 1));
-    shuffledLanguages[i] = languages[j];
-    shuffledLanguages[j] = languages[i];
+    [shuffledLanguages[i], shuffledLanguages[j]] = [shuffledLanguages[j], shuffledLanguages[i]];
   }
+  console.log(shuffledLanguages);
 
   // prettier-ignore
   $container.innerHTML = `
