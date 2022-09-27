@@ -24,7 +24,7 @@ const StarRating = $container => {
   });
 
   $container.addEventListener('click', e => {
-    let staridx = e.target.dataset.idx;
+    const staridx = e.target.dataset.idx;
     if (!e.target.matches('i')) return;
     [...$container.querySelectorAll('i')].forEach(($star, idx) => $star.classList.toggle('selected', idx <= staridx));
 
@@ -37,3 +37,5 @@ export default StarRating;
 
 // [고민]
 // - mouseover/out: 버블링 되는 이벤트 vs mouseenter/mouseleave: 버블링 안되는 이벤트 -> 책 참고
+// - custom event에 대해 공부해보자
+// - 별을 클릭했을 때 별점을 편리하게 알아내고자 dataset 어트리뷰트를 사용하였다.
