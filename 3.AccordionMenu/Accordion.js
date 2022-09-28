@@ -36,43 +36,43 @@ const menuList = [
 const Accordion = ($container, option = { showMultiple: false }) => {
   // do something!
 
-  document.body.classList.add('preload');
+  (function initialRender() {
+    document.body.classList.add('preload');
 
-  // 동적으로 HTML 생성
-  // prettier-ignore
-  $container.innerHTML = `
-  <div class="accordion-container">
-    ${menuList.map(({ title, subMenu }, idx) => `
-      <article class=${idx === 0 ? 'active' : ''}>
-        <h1><i class="bx bxs-chevron-down"></i>${title}</h1>
-        <ul>
-          ${subMenu.map(({ title, path }) => `<li><a href="${path}">${title}</a></li>`).join('')}
-        </ul>
-      </article>`).join('')}
-  </div>`;
+    // prettier-ignore
+    $container.innerHTML = `
+    <div class="accordion-container">
+      ${menuList.map(({ title, subMenu }, idx) => `
+        <article class=${idx === 0 ? 'active' : ''}>
+          <h1><i class="bx bxs-chevron-down"></i>${title}</h1>
+          <ul>
+            ${subMenu.map(({ title, path }) => `<li><a href="${path}">${title}</a></li>`).join('')}
+          </ul>
+        </article>`).join('')}
+    </div>`;
 
-  const $activeUl = $container.querySelector('.active ul');
-  $activeUl.style.height = `${$activeUl.scrollHeight}px`;
+    const $activeUl = $container.querySelector('.active ul');
+    $activeUl.style.height = `${$activeUl.scrollHeight}px`;
+  })();
 
   window.addEventListener('load', () => document.body.classList.remove('preload'));
 
-  // prettier-ignore
   $container.addEventListener('click', e => {
     if (!e.target.closest('h1')) return;
-    const $article = e.target.closest('article');
 
-    if (option.showMultiple) {
-      const $ul = e.target.nextElementSibling;
-      const istoggle = e.target.closest("article").classList.toggle('active');
-      $ul.style.height = `${istoggle? $ul.scrollHeight:0}px`;
-    } else {
-      [...$container.querySelectorAll('article')].forEach(article => {
-        const $ul = article.querySelector('ul');
-        if (article === $article) article.classList.toggle('active');
-        else article.classList.remove('active');
-        $ul.style.height = `${article.classList.contains('active') ? $ul.scrollHeight : 0}px`;
-      });
-    }
+    const $clickedArticle = e.target.closest('article');
+
+    const toggleArticle = article => {
+      if (article === $clickedArticle) article.classList.toggle('active');
+      else article.classList.remove('active');
+
+      const $ul = article.querySelector('ul');
+      $ul.style.height = `${article.classList.contains('active') ? $ul.scrollHeight : 0}px`;
+    };
+
+    option.showMultiple
+      ? toggleArticle($clickedArticle)
+      : [...$container.querySelectorAll('article')].forEach(toggleArticle);
   });
 };
 
@@ -87,3 +87,5 @@ export default Accordion;
 // - 높이 계산이랑 토글 잘 하면 묶을 수 있을지도...
 // - showMultiple if문 말고 합칠수 있는 방법 있을지도...
 // - toggle메서드의 반환값이 true/false인것을 이용함
+// - forEach뿐만아니라 인수가 정해져있는 경우 그래도 가져다쓰는 콜백함수의 호출문을 생략할 수 있다.
+// - 클릭했을 때 article에 active 토글하는 로직을 함수로 분리했다.
