@@ -38,24 +38,25 @@ const Swappable = $container => {
   };
 
   const handleDragEnter = e => {
-    console.log(e.target, 'ENTER');
     e.preventDefault();
-    const $coveredItem = e.target.closest('.draggable');
-    if (!$coveredItem) return;
-    $coveredItem.closest('li').classList.add('over');
+    if (!e.target.matches('.draggable')) return;
+    e.target.closest('li').classList.add('over');
   };
 
   const handleDragLeave = e => {
-    console.log('LEAVE');
-    const $coveredItem = e.target.closest('.draggable');
-    if (!$coveredItem) return;
-    $coveredItem.closest('li').classList.remove('over');
+    if (!e.target.matches('.draggable')) return;
+    e.target.closest('li').classList.remove('over');
+  };
+
+  const handleDragOver = e => {
+    e.preventDefault();
   };
 
   const handleDrop = e => {
     e.stopPropagation(); // stops the browser from redirecting.
-    const $coveredItem = e.target.closest('.draggable');
-    if (!$coveredItem) return;
+    if (!e.target.matches('.draggable')) return;
+
+    const $coveredItem = e.target;
     $coveredItem.closest('li').classList.remove('over');
 
     [$dragItem.innerHTML, $coveredItem.innerHTML] = [$coveredItem.innerHTML, $dragItem.innerHTML];
@@ -75,6 +76,7 @@ const Swappable = $container => {
   $container.addEventListener('dragstart', handleDragStart);
   $container.addEventListener('dragenter', handleDragEnter);
   $container.addEventListener('dragleave', handleDragLeave);
+  $container.addEventListener('dragover', handleDragOver);
   $container.addEventListener('drop', handleDrop);
 };
 
@@ -89,7 +91,9 @@ export default Swappable;
 // - dragenter에서 over를 붙이는 경우 중첩된 요소에 들어갈때마다 leave가 동작하기 때문에
 //   dragover에서 over를 붙여서 문제를 해결하였다. 그러나 이벤트가 너무 많이 발생하여 throttle걸어봤으나 버벅이는 현상이 발생하였다.
 //   초를 줄여야하는데 그럴거면 안 쓰는 것이 더 좋다.
-//   over에서는 무거운 행동을 하지 않으면 된다. 클래스를 붙이는 것은 가벼운 행동이다.
+//   over에서는 무거운 행동을 하지 않으면 된다. 클래스를 붙이는 것은 가벼운 행동이다. - 강사님..
 // - https://stackoverflow.com/questions/7110353/html5-dragleave-fired-when-hovering-a-child-element
-// - over에서 여러번 호출하는 것이 싫다. enter와 leave에서 하겠다.
+// - 버벅이는 현상은 leave때문에 발생하여 해결하기 곤란하고, over에서 여러번 호출하는 것이 싫다. enter와 leave에서 하겠다.
 //   CSS에서 draggable자식의 pointer-events: none으로 설정하고 enter와 leave에 핸들러를 동일하게 등록한다.
+// - draggable의 자식이 pointer-events에 영향을 받는 input 등의 요소라면 문제가 되겠지만, 그렇지 않은 경우에는 문제 해결 가능
+// - dragover와 dragenter에서 e.preventDefault는 필요하고, drop에서 e.stopPropagation이 필요하다.
