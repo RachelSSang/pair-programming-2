@@ -68,3 +68,7 @@ body {
   padding: 15px 24px;
   flex: 1;
 }
+
+.draggable * {
+  pointer-events: none;
+}
