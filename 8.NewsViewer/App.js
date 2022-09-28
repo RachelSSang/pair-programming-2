@@ -4,8 +4,16 @@ import { Nav, NewsList } from './components/index.js';
 const GLOBAL_STATE = { category: 'all' };
 
 class Observable {
-  constructor() {
+  constructor(observableState) {
     this.observers = [];
+    this.proxy = new Proxy(observableState, {
+      get: (obj, prop) => obj[prop],
+      set: (obj, prop, value) => {
+        obj[prop] = value;
+        this.notify(obj[prop]);
+        return true;
+      },
+    });
   }
 
   subscribe(func) {
@@ -21,8 +29,9 @@ class Observable {
   }
 }
 
-const observable = new Observable();
+const globalStateObservable = new Observable(GLOBAL_STATE);
 
+/*
 const globalStateProxy = new Proxy(GLOBAL_STATE, {
   get: (obj, prop) => obj[prop],
   set: (obj, prop, value) => {
@@ -31,13 +40,13 @@ const globalStateProxy = new Proxy(GLOBAL_STATE, {
     return true;
   },
 });
-
+*/
 const $root = document.querySelector('#root');
 Nav($root);
 const newsList = NewsList($root);
-observable.subscribe(newsList);
+globalStateObservable.subscribe(newsList);
 
-window.addEventListener('DOMContentLoaded', () => newsList(globalStateProxy.category));
+window.addEventListener('DOMContentLoaded', () => newsList(globalStateObservable.proxy.category));
 
 // 이벤트 리스너
 document.querySelector('nav').addEventListener('click', e => {
@@ -46,15 +55,15 @@ document.querySelector('nav').addEventListener('click', e => {
     category.classList.toggle('active', category === e.target)
   );
   console.log('!!!!', e.target.id);
-  globalStateProxy.category = e.target.id;
+  globalStateObservable.proxy.category = e.target.id;
 });
 
 const intersectionObserver = new IntersectionObserver(
   entries => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
-        console.log('스크롤:', globalStateProxy.category);
-        newsList(globalStateProxy.category, false);
+        console.log('스크롤:', globalStateObservable.proxy.category);
+        newsList(globalStateObservable.proxy.category, false);
       }
     });
   },
