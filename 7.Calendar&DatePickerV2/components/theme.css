@@ -1,0 +1,85 @@
+.hidden {
+  display: none;
+}
+
+.calendar {
+  --calendar-size: 0;
+  position: absolute;
+  width: var(--calendar-size);
+  height: calc(var(--calendar-size) * 1.2);
+  margin-top: 10px;
+  border-radius: 3%;
+  box-shadow: 5px 5px 10px lightgrey, 5px -5px 10px lightgrey, -5px -5px 10px lightgrey, -5px 5px 10px lightgrey;
+  overflow: hidden;
+}
+
+.calendar-nav {
+  width: 100%;
+  height: 20%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  color: white;
+  background-color: rgb(62, 194, 62);
+}
+
+.calendar-nav i {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 20%;
+  height: 100%;
+}
+
+.current-month-year {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.current-month {
+  font-size: calc(var(--calendar-size) * 0.06);
+}
+
+.current-year {
+  font-size: calc(var(--calendar-size) * 0.04);
+}
+
+.calendar-grid {
+  height: 80%;
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  grid-template-columns: repeat(auto-fill, 1fr);
+  justify-items: center;
+  align-items: center;
+  font-size: calc(var(--calendar-size) * 0.05);
+  background-color: white;
+}
+
+.calendar-grid span {
+  width: 100%;
+  text-align: center;
+  border-radius: 100px;
+}
+
+.calendar-grid span:hover {
+  background-color: rgb(62, 194, 62);
+}
+
+.gray {
+  color: lightgray;
+}
+
+.red {
+  color: red;
+}
+
+.today {
+  border: 1px solid rgb(62, 194, 62);
+}
+
+.selected {
+  background-color: rgb(62, 194, 62);
+  color: white;
+}
