@@ -46,7 +46,9 @@ Nav($root);
 const newsList = NewsList($root);
 globalStateObservable.subscribe(newsList);
 
-window.addEventListener('DOMContentLoaded', () => newsList(globalStateObservable.proxy.category));
+window.addEventListener('DOMContentLoaded', () => {
+  newsList(globalStateObservable.proxy.category);
+});
 
 // 이벤트 리스너
 document.querySelector('nav').addEventListener('click', e => {
@@ -58,22 +60,24 @@ document.querySelector('nav').addEventListener('click', e => {
   globalStateObservable.proxy.category = e.target.id;
 });
 
-const intersectionObserver = new IntersectionObserver(
-  entries => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        console.log('스크롤:', globalStateObservable.proxy.category);
-        newsList(globalStateObservable.proxy.category, false);
-      }
-    });
-  },
-  {
-    rootMargin: '0px',
-    threshold: 1.0,
-  }
-);
-
-intersectionObserver.observe(document.querySelector('.scroll-observer'));
+window.addEventListener('load', () => {
+  const intersectionObserver = new IntersectionObserver(
+    entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          // console.log(window.height(), window.document.height());
+          console.log('스크롤:', globalStateObservable.proxy.category);
+          newsList(globalStateObservable.proxy.category, false);
+        }
+      });
+    },
+    {
+      rootMargin: '0px',
+      threshold: 1.0,
+    }
+  );
+  intersectionObserver.observe(document.querySelector('.scroll-observer'));
+});
 
 // [회고]
 // - Proxy를 굳이 써야 하는 이유...? 유효성 검사 , 포메팅, 알림, 디버깅 등의 작업을 하지 않음..

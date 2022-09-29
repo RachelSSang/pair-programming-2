@@ -7,8 +7,9 @@ const data = {
         source: { id: null, name: 'YouTube' },
         author: null,
         title: '벤투호, 잠시후 카메룬 상대로 마지막 월드컵 모의고사 / YTN - YTN',
-        description:
-          '[앵커]축구 대표팀이 잠시 후 카메룬과 평가전을 갖습니다.카타르월드컵 본선에서 만날 아프리카 가나의 가상 상대인데, 월드컵 최종 엔트리를 확정하는 마지막 시험대입니다.현장 연결해보겠습니다. 허재원 기자![기자]네, 서울월드컵경기장입니다.[앵커]경기 시작까지 2시간도 채 남지 않았는...',
+        description: '',
+        // description:
+        //   '[앵커]축구 대표팀이 잠시 후 카메룬과 평가전을 갖습니다.카타르월드컵 본선에서 만날 아프리카 가나의 가상 상대인데, 월드컵 최종 엔트리를 확정하는 마지막 시험대입니다.현장 연결해보겠습니다. 허재원 기자![기자]네, 서울월드컵경기장입니다.[앵커]경기 시작까지 2시간도 채 남지 않았는...',
         url: 'https://www.youtube.com/watch?v=G40_BRXLxT0',
         urlToImage: 'https://i.ytimg.com/vi/G40_BRXLxT0/hqdefault.jpg',
         publishedAt: '2022-09-27T09:37:12Z',
@@ -18,7 +19,8 @@ const data = {
         source: { id: null, name: 'Chosun.com' },
         author: '조선비즈',
         title: "금리·물가·환율 ‘3高'에… 오일뱅크도 투자 철회 - 조선비즈 - 조선비즈",
-        description: '금리·물가·환율 3高에 오일뱅크도 투자 철회',
+        description: '',
+        // description: '금리·물가·환율 3高에 오일뱅크도 투자 철회',
         url: 'https://biz.chosun.com/industry/company/2022/09/27/T6VO7CROTZFEHPC5Q42C3UPUKE/',
         urlToImage:
           'https://biz.chosun.com/resizer/bcXLKC7d3p10HBSLgLdLYxOpNU8=/663x348/smart/cloudfront-ap-northeast-1.images.arcpublishing.com/chosunbiz/CY6EQBYJCZF5ZM2SBF67FN6BLE.jpg',
@@ -29,8 +31,9 @@ const data = {
         source: { id: null, name: 'Kormedi.com' },
         author: '김세진 기자',
         title: '문신에 들어가는 잉크 안전할까? - 코메디닷컴',
-        description:
-          '지난 10년 동안 문신을 한 개 이상 한 미국인의 수가 50% 이상 늘었다. 여론조사 기관인 입소스(Ipsos)는 문신을 한 미국인이 2012년 전체의 21%에서 2019년 30%로 늘었다고 최근 발표했다.문신한 사람이 늘면서 안전성에 대한 문제가 제기됐다. 문신 잉크가 가장 먼저 도마에 올랐다. 미국에서는 문신 사업이 엄격한 위생법의 적용을 받지만, 문신할 때 사용하는 잉크는 규제를 받지 않는다.미국 뉴욕주립대 화학과 조교수인 존 스위렉(Jo',
+        description: '',
+        // description:
+        //   '지난 10년 동안 문신을 한 개 이상 한 미국인의 수가 50% 이상 늘었다. 여론조사 기관인 입소스(Ipsos)는 문신을 한 미국인이 2012년 전체의 21%에서 2019년 30%로 늘었다고 최근 발표했다.문신한 사람이 늘면서 안전성에 대한 문제가 제기됐다. 문신 잉크가 가장 먼저 도마에 올랐다. 미국에서는 문신 사업이 엄격한 위생법의 적용을 받지만, 문신할 때 사용하는 잉크는 규제를 받지 않는다.미국 뉴욕주립대 화학과 조교수인 존 스위렉(Jo',
         url: 'https://kormedi.com/1417709/문신에-들어가는-잉크-안전할까/',
         urlToImage: 'https://kormedi.com/wp-content/uploads/2022/09/unnamed-file-98-700x466.jpg',
         publishedAt: '2022-09-27T09:16:47Z',
@@ -41,8 +44,9 @@ const data = {
         source: { id: null, name: 'Medigatenews.com' },
         author: '',
         title: 'MEDI:GATE NEWS 치매 위험 높은 당뇨인, 규칙적으로 운동하면 발병률 뚝 - 메디게이트뉴스',
-        description:
-          '왼쪽부터 서울대병원 강남센터 가정의학과 유정은 교수, 고대 구로병원 남가은 교수. 당뇨병 환자들의 치매 발병률은 일반 사람들보다 1.5 ~ 3배 정도 높다. 최근 당뇨병 환자의 꾸준한 신체 활동이 치매 위험도를 낮춘다는 연구 결과가 나왔다. 당뇨병 환자라면 하루라도 빨리 규칙적인 운동을 시작하는 것이 치매 예방에 도움이 된다는 얘기다. 서울대병원 강남센터 가정의학과 유정은 교수, 고대 구로병원 남가은 교수 연구팀은 2009년부터 2012년까지 국가건강검진에 참…',
+        description: '',
+        // description:
+        //   '왼쪽부터 서울대병원 강남센터 가정의학과 유정은 교수, 고대 구로병원 남가은 교수. 당뇨병 환자들의 치매 발병률은 일반 사람들보다 1.5 ~ 3배 정도 높다. 최근 당뇨병 환자의 꾸준한 신체 활동이 치매 위험도를 낮춘다는 연구 결과가 나왔다. 당뇨병 환자라면 하루라도 빨리 규칙적인 운동을 시작하는 것이 치매 예방에 도움이 된다는 얘기다. 서울대병원 강남센터 가정의학과 유정은 교수, 고대 구로병원 남가은 교수 연구팀은 2009년부터 2012년까지 국가건강검진에 참…',
         url: 'https://www.medigatenews.com/news/2299148922',
         urlToImage: 'https://medigatenews.com/file/news/277159',
         publishedAt: '2022-09-27T09:13:00Z',
@@ -53,8 +57,9 @@ const data = {
         source: { id: null, name: 'Medical-tribune.co.kr' },
         author: '메디칼트리뷴',
         title: '안전한 가슴성형의 기준은 보형물 선택 - 메디칼트리뷴',
-        description:
-          '얼굴 못지 않게 몸매의 중요성이 커지면서 별도 관리하는 이들이 적지 않다. 과거에는 깔끔한 얼굴과 반듯한 이목구비뿐 아니라 몸매를 가꾸고 아름다운 라인을 만드는 게 일반인들 사이에서도 트렌드가 됐다.몸매 관리를 위해서는 운동, 식이요법이 필수이지만 몸매 라인에서 가슴 크기나 모양의 변화는 쉽지 않다. 선천적인 요소가 큰 영향을 미치는 만큼 가슴 라인이나 크기를 개선하기 위해 수술받는 경우가 늘고 있다.다만 가슴성형수술의 우선 순위는 안전이다. 브라운성형외과 이…',
+        description: '',
+        // description:
+        //   '얼굴 못지 않게 몸매의 중요성이 커지면서 별도 관리하는 이들이 적지 않다. 과거에는 깔끔한 얼굴과 반듯한 이목구비뿐 아니라 몸매를 가꾸고 아름다운 라인을 만드는 게 일반인들 사이에서도 트렌드가 됐다.몸매 관리를 위해서는 운동, 식이요법이 필수이지만 몸매 라인에서 가슴 크기나 모양의 변화는 쉽지 않다. 선천적인 요소가 큰 영향을 미치는 만큼 가슴 라인이나 크기를 개선하기 위해 수술받는 경우가 늘고 있다.다만 가슴성형수술의 우선 순위는 안전이다. 브라운성형외과 이…',
         url: 'http://www.medical-tribune.co.kr/news/articleView.html?idxno=109743',
         urlToImage: 'http://www.medical-tribune.co.kr/news/thumbnail/202209/109743_41098_938_v150.jpg',
         publishedAt: '2022-09-27T09:10:05Z',
@@ -64,8 +69,10 @@ const data = {
         source: { id: null, name: 'Einfomax.co.kr' },
         author: '박준형 기자',
         title: '산은, 대우조선 \'헐값매각\' 논란 반박…"현재 재무상황 고려해야" - 연합인포맥스',
-        description:
-          '(서울=연합인포맥스) 박준형 기자 = 한화그룹이 대우조선해양을 2조원에 인수하기로 한 것과 관련, 헐값 매각 논란이 불거지자 산업은행이 "적정 기업가치 판단은 시점별 재무상황을 고려할 필요가 있다"라며 반박하고 나섰다.산은은 27일 입장문을 내고 "현재 대우조선의 재무상황은 현저하게 악화했다"라며 이같이 밝혔다.일각에서 지난 2008년 한화그룹, 지난 2019년 현대중공업그룹과 M&A 추진할 때와 비교해 지나치게 낮은 매각가라는 비판이 일자 이에 대해 적극적으…',
+        description: '',
+
+        // description:
+        //   '(서울=연합인포맥스) 박준형 기자 = 한화그룹이 대우조선해양을 2조원에 인수하기로 한 것과 관련, 헐값 매각 논란이 불거지자 산업은행이 "적정 기업가치 판단은 시점별 재무상황을 고려할 필요가 있다"라며 반박하고 나섰다.산은은 27일 입장문을 내고 "현재 대우조선의 재무상황은 현저하게 악화했다"라며 이같이 밝혔다.일각에서 지난 2008년 한화그룹, 지난 2019년 현대중공업그룹과 M&A 추진할 때와 비교해 지나치게 낮은 매각가라는 비판이 일자 이에 대해 적극적으…',
         url: 'http://news.einfomax.co.kr/news/articleView.html?idxno=4235193',
         urlToImage: 'http://news.einfomax.co.kr/image/logo/snslogo_20201007035704.jpg',
         publishedAt: '2022-09-27T09:08:41Z',
@@ -76,8 +83,10 @@ const data = {
         source: { id: null, name: 'Seoul.co.kr' },
         author: 'https://www.seoul.co.kr',
         title: '해리스, 내일 DMZ 방문해 北 압박… “전기차 우려 해소 방안 찾겠다” - 서울신문',
-        description:
-          '日국장 참석한 韓총리와 회담, 美부통령 방한 일정 이례적 공개“北 미사일 도발에 단호한 메시지”美인플레감축법 차별 우려 전달엔“한국 입장 이해… 협의 지속할 것”29일 방한하는 카멀라 해리스 미국 부통령이 당일 비무장지대(DMZ)를 찾아 우리나라 방위에 대한 미국의 약속을 강조한다. 한...',
+        description: '',
+
+        // description:
+        //   '日국장 참석한 韓총리와 회담, 美부통령 방한 일정 이례적 공개“北 미사일 도발에 단호한 메시지”美인플레감축법 차별 우려 전달엔“한국 입장 이해… 협의 지속할 것”29일 방한하는 카멀라 해리스 미국 부통령이 당일 비무장지대(DMZ)를 찾아 우리나라 방위에 대한 미국의 약속을 강조한다. 한...',
         url: 'https://www.seoul.co.kr/news/newsView.php?id=20220928006001',
         urlToImage: 'https://img.seoul.co.kr/img/upload/2022/09/27/SSI_20220927182746.jpg',
         publishedAt: '2022-09-27T08:56:00Z',
@@ -87,8 +96,10 @@ const data = {
         source: { id: null, name: 'Manzlab.com' },
         author: '방수호 기자',
         title: '연기 루머는 헛소문··· 우크라이나 게임 ‘스토커 2’ 예정대로 2023년 출시 - 맨즈랩',
-        description:
-          '우크라이나 게임 개발사 GSC 게임 월드가 현재 개발 중인 ‘스토커 2: 하트 오브 초르노빌’(S.T.A.L.K.E.R 2: Heart of Chernobyl, 이하 스토커 2)을 2023년 출시할 것이라는 공식 입장을 밝혔다.GSC 게임 월드의 스토커 시리즈는 FPS와 RPG가 결합된 장르의 게임이다. 우수한 인공지능과 그래픽, 몰입감 있는 전투 시스템으로 호평을 받았으며, 스토커 2는 13년만에 공개된 시리즈 신작이다.올해 2월 시작된 러시아의 우크라이나 …',
+        description: '',
+
+        // description:
+        //   '우크라이나 게임 개발사 GSC 게임 월드가 현재 개발 중인 ‘스토커 2: 하트 오브 초르노빌’(S.T.A.L.K.E.R 2: Heart of Chernobyl, 이하 스토커 2)을 2023년 출시할 것이라는 공식 입장을 밝혔다.GSC 게임 월드의 스토커 시리즈는 FPS와 RPG가 결합된 장르의 게임이다. 우수한 인공지능과 그래픽, 몰입감 있는 전투 시스템으로 호평을 받았으며, 스토커 2는 13년만에 공개된 시리즈 신작이다.올해 2월 시작된 러시아의 우크라이나 …',
         url: 'http://www.manzlab.com/news/articleView.html?idxno=22562',
         urlToImage: 'https://cdn.manzlab.com/news/thumbnail/202209/22562_50378_2450_v150.jpg',
         publishedAt: '2022-09-27T08:30:14Z',
@@ -99,8 +110,10 @@ const data = {
         source: { id: null, name: 'Manzlab.com' },
         author: '길문혁 기자',
         title: '가격 이상하네··· MSI X670＆X670E 메인보드 공식 공개 - 맨즈랩',
-        description:
-          'MSI가 자신의 유튜브 라이브 방송을 통해 AMD 600 시리즈의 메인보드 가격 일부를 공개했다.공개된 모델은 하위라인업 PRO X670-P Wi-Fi 329$(한화 약 47만 원), MPG X670E CARBON Wi-Fi 499$(한화 약 71만원), MEG X670E ACE 799$(한화 약 113만 원), MEG X670E GODLIKE 1,299$(한화 약 185만 원)이다.X670과 X670E에 따라 일부 가격 차이가 있을 것으로 예상되긴 했으나, …',
+        description: '',
+
+        // description:
+        //   'MSI가 자신의 유튜브 라이브 방송을 통해 AMD 600 시리즈의 메인보드 가격 일부를 공개했다.공개된 모델은 하위라인업 PRO X670-P Wi-Fi 329$(한화 약 47만 원), MPG X670E CARBON Wi-Fi 499$(한화 약 71만원), MEG X670E ACE 799$(한화 약 113만 원), MEG X670E GODLIKE 1,299$(한화 약 185만 원)이다.X670과 X670E에 따라 일부 가격 차이가 있을 것으로 예상되긴 했으나, …',
         url: 'http://www.manzlab.com/news/articleView.html?idxno=22548',
         urlToImage: 'https://cdn.manzlab.com/news/thumbnail/202209/22548_50327_3939_v150.jpg',
         publishedAt: '2022-09-27T08:20:41Z',
@@ -111,8 +124,10 @@ const data = {
         source: { id: null, name: 'Manzlab.com' },
         author: '김희철 기자',
         title: '펜티엄 실버 N6005 미니 PC ‘GMKtec Nucbox7’ < 뉴스룸 < 기사본문 - 맨즈랩',
-        description:
-          '미니PC 제조사 GMK는 인텔 펜티엄 실버 N6005 기반 미니 PC GMK NucBox 7을 선보였다. 사양은 인텔 펜티엄 실버 N6005(4코어 4스레드, 기본 클럭 2GHz, 최대 클럭 3.3GHz, TDP 10W), LPDDR4 16GB 2933MHz x1, 인텔 UHD 그래픽스(최대 900MHz), 512GB SSD 구성이다.포트 및 네트워크 구성은 USB 3.2 Type-A x3, HDMI x3(4K@60Hz), 기가랜(RJ45) x2, 헤드폰 잭 …',
+        description: '',
+
+        // description:
+        //   '미니PC 제조사 GMK는 인텔 펜티엄 실버 N6005 기반 미니 PC GMK NucBox 7을 선보였다. 사양은 인텔 펜티엄 실버 N6005(4코어 4스레드, 기본 클럭 2GHz, 최대 클럭 3.3GHz, TDP 10W), LPDDR4 16GB 2933MHz x1, 인텔 UHD 그래픽스(최대 900MHz), 512GB SSD 구성이다.포트 및 네트워크 구성은 USB 3.2 Type-A x3, HDMI x3(4K@60Hz), 기가랜(RJ45) x2, 헤드폰 잭 …',
         url: 'http://www.manzlab.com/news/articleView.html?idxno=22558',
         urlToImage: 'https://cdn.manzlab.com/news/thumbnail/202209/22558_50336_2348_v150.jpg',
         publishedAt: '2022-09-27T08:20:25Z',
@@ -123,8 +138,10 @@ const data = {
         source: { id: null, name: 'Dementianews.co.kr' },
         author: '조재민 기자',
         title: '|기획| 관리 사각지대에 놓인 한방 치매약, 이대로 괜찮을까 - 디멘시아뉴스',
-        description:
-          '&#39;30억 달러&#39;. 한화로 환산하면 &#39;4조 2,000억 원&#39;이다. 이렇게 큰 금액의 사용처는 어디일까? 바로 다국적 제약사인 일라이 릴리가 &#39;솔라네주맙(Solanezumab)&#39; 등 치매약 개발을 위해 지난 27년간 쏟아부은 돈이다.지난 2017년 일리아 릴리는 세계적으로 주목받던 치매 치료제인 솔라네주맙의 임상시험 실패를 선언했다. 우리가 상상할 수도 없는 막대한 자본을 투입하고도 말이다. 또 다른 사례도 있다. 바이오…',
+        description: '',
+
+        // description:
+        //   '&#39;30억 달러&#39;. 한화로 환산하면 &#39;4조 2,000억 원&#39;이다. 이렇게 큰 금액의 사용처는 어디일까? 바로 다국적 제약사인 일라이 릴리가 &#39;솔라네주맙(Solanezumab)&#39; 등 치매약 개발을 위해 지난 27년간 쏟아부은 돈이다.지난 2017년 일리아 릴리는 세계적으로 주목받던 치매 치료제인 솔라네주맙의 임상시험 실패를 선언했다. 우리가 상상할 수도 없는 막대한 자본을 투입하고도 말이다. 또 다른 사례도 있다. 바이오…',
         url: 'http://www.dementianews.co.kr/news/articleView.html?idxno=5610',
         urlToImage: 'http://www.dementianews.co.kr/news/thumbnail/202209/5610_11396_2659_v150.jpg',
         publishedAt: '2022-09-27T08:15:00Z',
@@ -135,8 +152,10 @@ const data = {
         source: { id: null, name: 'YouTube' },
         author: null,
         title: "'마약 투약' 혐의 돈스파이크 체포…필로폰 1천 회분 압수 / SBS - SBS 뉴스",
-        description:
-          '어제(26일) 밤 8시쯤 돈스파이크라는 예명으로 활동하는 작곡가 겸 사업가 김민수 씨가 서울 강남의 한 호텔에서 마약을 투약한 혐의로 경찰에 체포됐습니다. 돈스파이크는 체포 당시 1천 회분 투약량에 해당하는 필로폰 30g을 지니고 있었고 마약 간이시약 검사에서도 양성 반응이 나왔습...',
+        description: '',
+
+        // description:
+        //   '어제(26일) 밤 8시쯤 돈스파이크라는 예명으로 활동하는 작곡가 겸 사업가 김민수 씨가 서울 강남의 한 호텔에서 마약을 투약한 혐의로 경찰에 체포됐습니다. 돈스파이크는 체포 당시 1천 회분 투약량에 해당하는 필로폰 30g을 지니고 있었고 마약 간이시약 검사에서도 양성 반응이 나왔습...',
         url: 'https://www.youtube.com/watch?v=NR3O0RD37Ic',
         urlToImage: 'https://i.ytimg.com/vi/NR3O0RD37Ic/hqdefault.jpg',
         publishedAt: '2022-09-27T08:10:51Z',
