@@ -5,45 +5,11 @@ const DatePicker = $container => {
 
   $container.innerHTML = `
   <input class="date-picker" type="text" placeholder="Select date" readonly></input>
-  <div class="calendar"></div>`
-  ;
+  <div class="calendar"></div>`;
 
   Calendar($container.querySelector('.calendar'));
-  /*
 
-  $container.querySelector('.date-picker').addEventListener('click', () => {
-    STATE.render.year = STATE.selected.year ?? STATE.today.year;
-    STATE.render.month = STATE.selected.month ?? STATE.today.month;
-    render();
-    $container.querySelector('.calendar').classList.remove('hidden');
-  });
-
-  $container.querySelector('.calendar-grid').addEventListener('click', e => {
-    if (e.target.matches('.day, .calendar-grid')) return;
-    if (e.target.matches('.prev'))
-      STATE.selected = {
-        year: STATE.render.month === 1 ? STATE.render.year - 1 : STATE.render.year,
-        month: STATE.render.month === 1 ? 12 : STATE.render.month - 1,
-        date: +e.target.textContent,
-      };
-    else if (e.target.matches('.next'))
-      STATE.selected = {
-        year: STATE.render.month === 12 ? STATE.render.year + 1 : STATE.render.year,
-        month: STATE.render.month === 12 ? 1 : STATE.render.month + 1,
-        date: +e.target.textContent,
-      };
-    else STATE.selected = { ...STATE.render, date: +e.target.textContent };
-    $container.querySelector('.calendar').classList.add('hidden');
-    $container.querySelector('.date-picker').value = Object.values(STATE.selected)
-      .map(e => (e + '').padStart(2, '0'))
-      .join('-');
-  });
-
-  document.body.addEventListener('click', e => {
-    if (e.target.matches('.date-picker-container *')) return;
-    $container.querySelector('.calendar').classList.add('hidden');
-  });
-  */
+  $container.querySelector('.date-picker').addEventListener('click', () => {});
 };
 
 export default DatePicker;
