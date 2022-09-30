@@ -1,14 +1,16 @@
-const reconciliation = (parent, dom, newDom) => {
+const reconciliation = (dom, newDom) => {
   // dom과 newDOM을 비교하면서 새로운 요소만 dom에 갱신
 
   // 엘리먼트의 타입이 다른 경우
-  if (dom.tagName !== newDom.tagName) parent.replaceChild(newDom, dom);
+  if (dom.tagName !== newDom.tagName) {
+    dom.replaceWith(newDom);
+  }
   // 엘리먼트의 타입이 같은 경우
   else {
     const domAttributes = [...dom.attributes];
     const newDomAttributes = [...newDom.attributes];
 
-    console.log(domAttributes, newDomAttributes);
+    // console.log(domAttributes, newDomAttributes);
 
     // 투포인터를 이용한 attributes 비교 및 갱신
     domAttributes.sort((x, y) => (x.nodeName > y.nodeName ? 1 : -1));
@@ -18,7 +20,7 @@ const reconciliation = (parent, dom, newDom) => {
     while (domIdx < domAttributes.length || newDomIdx < newDomAttributes.length) {
       if (domIdx >= domAttributes.length) {
         dom.setAttribute(newDomAttributes[newDomIdx]?.name, newDomAttributes[newDomIdx]?.value);
-        console.log(newDomAttributes[newDomIdx]?.value, '추가해!!');
+        // console.log(newDomAttributes[newDomIdx]?.value, '추가해!!');
         newDomIdx++;
         continue;
       }
@@ -37,12 +39,13 @@ const reconciliation = (parent, dom, newDom) => {
         newDomIdx++;
       } else {
         // console.log(domAttributes[domIdx]?.name, '삭제해!!');
+        // removeAttribute 실행시 노드를 아예 바꿔버린다~~~ 왜? -> 크롬 개발자도구 문제?
         dom.removeAttribute(domAttributes[domIdx]?.name);
         domIdx++;
       }
     }
 
-    console.log(dom, newDom);
+    // console.log(dom, newDom);
   }
 };
 
@@ -62,10 +65,10 @@ newDom.setAttribute('a', 'a');
 newDom.setAttribute('b', 'b');
 newDom.setAttribute('c', 'c');
 newDom.setAttribute('d', 'd');
-newDom.setAttribute('e', 'e');
-newDom.setAttribute('u', 'u');
-newDom.setAttribute('style', `{color:'red', fontweight:'bold'}`);
+// newDom.setAttribute('e', 'e');
+// newDom.setAttribute('u', 'u');
+// newDom.setAttribute('style', `{color:'red', fontweight:'bold'}`);
 
-reconciliation(root, dom, newDom);
+setTimeout(() => reconciliation(dom, newDom), 1000);
 
 // 시간이 남아돌면 attribute중에 style 재귀처리 해주던가 말던가!!
