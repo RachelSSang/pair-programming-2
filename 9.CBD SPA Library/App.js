@@ -1,6 +1,7 @@
 import TodoInput from './components/TodoInput.js';
 import TodoList from './components/TodoList.js';
 import TodoFilter from './components/TodoFilter.js';
+import reconciliation from './library/reconciliation_v0.js';
 
 let state = {
   todos: [
@@ -15,10 +16,14 @@ let state = {
 const $root = document.getElementById('root');
 
 const render = state => {
-  $root.innerHTML = `
+  const $virtualRoot = document.createElement('div');
+  $virtualRoot.setAttribute('id', 'root');
+  $virtualRoot.innerHTML = `
   ${TodoInput()}
   ${TodoList(state)}
   ${TodoFilter(state)}`;
+
+  reconciliation($root, $virtualRoot);
 };
 
 const setState = newState => {
@@ -31,7 +36,7 @@ render(state);
 const getNewTodoId = () => Math.max(...state.todos.map(todo => +todo.id), 0) + 1;
 
 $root.addEventListener('keyup', e => {
-  if (!e.target.matches('.todo-input') || e.key !== 'Enter') return;
+  if (!e.target.matches('.todo-input') || e.key !== 'Enter' || e.target.value.trim() === '') return;
 
   setState({ todos: [{ id: getNewTodoId(), content: e.target.value, completed: false }, ...state.todos] });
 });
