@@ -18,19 +18,19 @@ const NewsList = $container => {
     `${getCategoryData(category, { page })
       .map(
         ({ title, description, url, urlToImage }) => `
-      <section class="news-item">
-      <div class="thumbnail">
-        <a href="${url}" target="_blank" rel="noopener noreferrer">
-          <img src="${urlToImage}" alt="thumbnail" />
-        </a>
-      </div>
-      <div class="contents">
-        <h2>
-          <a href="${url}" target="_blank" rel="noopener noreferrer">${title}</a>
-        </h2>
-        <p>${description}</p>
-      </div>
-      </section>`
+          <section class="news-item">
+          <div class="thumbnail">
+            <a href="${url}" target="_blank" rel="noopener noreferrer">
+              <img src="${urlToImage}" alt="thumbnail" />
+            </a>
+          </div>
+          <div class="contents">
+            <h2>
+              <a href="${url}" target="_blank" rel="noopener noreferrer">${title}</a>
+            </h2>
+            <p>${description}</p>
+          </div>
+          </section>`
       )
       .join('')}`;
 

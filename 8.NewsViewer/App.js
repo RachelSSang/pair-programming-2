@@ -7,7 +7,7 @@ class Observable {
   constructor(observableState) {
     this.observers = [];
     this.proxy = new Proxy(observableState, {
-      get: (obj, prop) => obj[prop],
+      // get: (obj, prop) => obj[prop],
       set: (obj, prop, value) => {
         obj[prop] = value;
         this.notify(obj[prop]);
@@ -18,10 +18,6 @@ class Observable {
 
   subscribe(func) {
     this.observers.push(func);
-  }
-
-  unsubscribe(func) {
-    this.observers = this.observers.filter(observer => observer !== func);
   }
 
   notify(data) {
