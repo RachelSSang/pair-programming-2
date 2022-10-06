@@ -1,0 +1,24 @@
+ol,
+ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.todo-content {
+  display: inline-block;
+  width: 100px;
+}
+
+.todo-checkbox:checked ~ .todo-content {
+  text-decoration: line-through;
+}
+
+.todo-filters {
+  display: flex;
+  gap: 10px;
+}
+
+.todo-filter.active {
+  text-decoration: underline;
+}
