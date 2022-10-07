@@ -12,21 +12,18 @@ const Nav = $container => {
     { id: 'technology', name: '기술' },
   ];
 
-  (function initialRender() {
-    const $nav = document.createElement('nav');
-    $nav.className = 'category-list';
-    $nav.innerHTML = `
+  $container.innerHTML = `
+    <nav class="category-list">
       <ul>
         ${CATEGORY_LIST.map(
           ({ id, name }, idx) => `<li id="${id}" class="category-item ${idx === 0 ? 'active' : ''}">${name}</li>`
         ).join('')}
-      </ul>`;
-    $container.appendChild($nav);
-  })();
+      </ul>
+    </nav>`;
 
-  document.querySelector('nav').addEventListener('click', e => {
+  $container.querySelector('nav').addEventListener('click', e => {
     if (!e.target.matches('.category-item')) return;
-    [...document.querySelectorAll('.category-item')].forEach(category =>
+    [...$container.querySelectorAll('.category-item')].forEach(category =>
       category.classList.toggle('active', category === e.target)
     );
     proxy.category = e.target.id;

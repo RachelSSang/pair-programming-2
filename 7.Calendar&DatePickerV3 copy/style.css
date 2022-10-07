@@ -1,0 +1,23 @@
+*,
+*::after,
+*::before {
+  box-sizing: border-box;
+}
+html {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+body {
+  flex-grow: 1;
+  font-family: 'Open Sans';
+  font-weight: 300;
+}
+.title {
+  color: #db5b33;
+  font-weight: 300;
+  text-align: center;
+}
+.date-picker-container {
+  padding: 20px auto;
+}

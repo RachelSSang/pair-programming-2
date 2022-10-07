@@ -4,6 +4,12 @@
   .insertAdjacentHTML('afterend', '<link href="star-rating/theme.css" rel="stylesheet" />');
 
 const StarRating = $container => {
+  // $container.innerHTML = `<div class="star-rating-container"></div>`;
+  // const $starRatingContainer = $container.querySelector('.star-rating-container');
+  // for (let i = 0; i < $container.dataset.maxRating; i++) {
+  //   $starRatingContainer.innerHTML += `<i class="bx bxs-star" data-idx=${i}></i>`;
+  // }
+
   $container.innerHTML = `
   <div class="star-rating-container">
     ${Array.from({ length: $container.dataset.maxRating })
@@ -13,10 +19,22 @@ const StarRating = $container => {
 
   const $stars = [...$container.querySelectorAll('i')];
 
+  // // mouseenter 이벤트는 버블링이 발생하지 않으므로 이벤트를 위임하기 위해서는 캡처링 단계에서 이벤트를 캐치해야 함
+  // $container.addEventListener('mouseenter', e => {
+  //   if (!e.target.matches('i')) return;
+  //   $stars.forEach(($star, idx) => $star.classList.toggle('hovered', idx <= +e.target.dataset.idx));
+  // }, true);
+
   $container.addEventListener('mouseover', e => {
     if (!e.target.matches('i')) return;
     $stars.forEach(($star, idx) => $star.classList.toggle('hovered', idx <= +e.target.dataset.idx));
   });
+
+  // // mouseleave 이벤트는 버블링이 발생하지 않으므로 이벤트를 위임하기 위해서는 캡처링 단계에서 이벤트를 캐치해야 함
+  // $container.addEventListener('mouseleave', e => {
+  //   if (!e.target.closest('.star-rating-container')) return;
+  //   $stars.forEach($star => $star.classList.remove('hovered'));
+  // }, true);
 
   $container.addEventListener('mouseout', e => {
     if (!e.target.closest('.star-rating-container')) return;

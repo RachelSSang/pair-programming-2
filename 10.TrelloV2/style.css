@@ -1,0 +1,29 @@
+* {
+  margin: none;
+  padding: none;
+}
+
+.hidden {
+  display: none;
+}
+
+.trello-container {
+  display: flex;
+  flex-direction: row;
+  gap: 50px;
+}
+
+.board {
+  width: 350px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 10px;
+  background-color: lightgray;
+  border-radius: 5px;
+}
+
+.card {
+  padding: 10px;
+  background-color: white;
+}

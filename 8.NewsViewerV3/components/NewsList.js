@@ -17,9 +17,21 @@ const NewsList = $container => {
     $container.appendChild($newsListContainer);
   })();
 
-  const getInnerHTML = newsList =>
+  const getData = async (category, page, pageSize = PAGE_SIZE) => {
     // prettier-ignore
-    newsList.map(({ title, description, url, urlToImage }) => `
+    const API_URL = `https://newsapi.org/v2/top-headlines?country=kr&category=${category === 'all' ? '' : category}&page=${page}&pageSize=${pageSize}&apiKey=${API_KEY}`;
+
+    try {
+      const { data } = await axios.get(API_URL);
+      return data;
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const getInnerHTML = articles =>
+    // prettier-ignore
+    articles.map(({ title, description, url, urlToImage }) => `
       <section class="news-item">
       <div class="thumbnail">
         <a href="${url}" target="_blank" rel="noopener noreferrer">
@@ -34,24 +46,14 @@ const NewsList = $container => {
       </div>
       </section>`).join('');
 
-  const getData = async (category, page, pageSize = PAGE_SIZE) => {
-    // prettier-ignore
-    const API_URL = `https://newsapi.org/v2/top-headlines?country=kr&category=${category === 'all' ? '' : category}&page=${page}&pageSize=${pageSize}&apiKey=${API_KEY}`;
-
-    try {
-      const { data } = await axios.get(API_URL);
-      return data;
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
+  const $newsList = $container.querySelector('.news-list');
+  const $scrollObserver = $container.querySelector('.scroll-observer');
   let page = 0;
 
   // 카테고리 변경 시 비워주는 함수
   const clear = () => {
     page = 0;
-    $container.querySelector('.news-list').innerHTML = '';
+    $newsList.innerHTML = '';
   };
 
   // intersectionObserver에 의해 호출되는 함수
@@ -60,10 +62,10 @@ const NewsList = $container => {
 
     const { articles, totalResults } = await getData(category, page);
 
-    const totalPage = Math.ceil(totalResults / PAGE_SIZE);
-    $container.querySelector('.scroll-observer').style.display = `${page > totalPage ? 'none' : 'block'}`;
+    $newsList.innerHTML += getInnerHTML(articles);
 
-    $container.querySelector('.news-list').innerHTML += getInnerHTML(articles);
+    const totalPage = Math.ceil(totalResults / PAGE_SIZE);
+    $scrollObserver.style.display = `${page >= totalPage ? 'none' : 'block'}`;
 
     if (document.body.scrollHeight < window.innerHeight) render(category);
   };
@@ -80,7 +82,7 @@ const NewsList = $container => {
       { rootMargin: '0px', threshold: 0.6 }
     );
 
-    intersectionObserver.observe(document.querySelector('.scroll-observer'));
+    intersectionObserver.observe($scrollObserver);
   });
 };
 

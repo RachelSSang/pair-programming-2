@@ -40,6 +40,7 @@ const render = $container => {
 };
 
 const setState = ($container, newState) => {
+  console.log('setState');
   state = { ...state, ...newState };
   render($container);
 };

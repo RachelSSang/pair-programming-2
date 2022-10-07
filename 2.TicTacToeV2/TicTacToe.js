@@ -37,6 +37,7 @@ const TicTacToe = $root => {
     </div>`;
   };
 
+  // render();
   window.addEventListener('DOMContentLoaded', render);
 
   $root.addEventListener('click', e => {
