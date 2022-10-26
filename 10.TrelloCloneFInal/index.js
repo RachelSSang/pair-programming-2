@@ -1,5 +1,5 @@
 import render from './library/dom/render.js';
-import Trello from './App.js';
+import App from './App.js';
 
 // initial rendering
-render(Trello, document.getElementById('root'));
+render(App, document.getElementById('root'));

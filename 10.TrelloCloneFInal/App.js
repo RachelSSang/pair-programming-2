@@ -1,7 +1,12 @@
-import Component from './library/core/Component';
+import Component from './library/core/Component.js';
+import Trello from './components/Trello.js';
 
-class Trello extends Component {
-  render() {}
+class App extends Component {
+  render() {
+    return `
+    ${new Trello().render()}
+    `;
+  }
 }
 
-export default Trello;
+export default App;
