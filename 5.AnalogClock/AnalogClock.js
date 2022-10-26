@@ -7,7 +7,7 @@ const AnalogClock = $container => {
     <div class="hand second"></div>
     ${Array.from({ length: 12 }).map((_, idx) => `<div class="time time${idx + 1}">|</div>`).join('')}`;
 
-  function displayTime() {
+  function tick() {
     const now = new Date();
     const [nowHour, nowMin, nowSec] = [now.getHours(), now.getMinutes(), now.getSeconds()];
 
@@ -17,8 +17,8 @@ const AnalogClock = $container => {
     $container.querySelector('.hand.second').style.setProperty('--deg', nowSec * 6);
   }
 
-  displayTime();
-  setInterval(displayTime, 1000);
+  tick();
+  setInterval(tick, 1000);
 };
 
 export default AnalogClock;

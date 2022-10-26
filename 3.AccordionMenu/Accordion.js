@@ -36,8 +36,8 @@ const menuList = [
 const Accordion = ($container, option = { showMultiple: false }) => {
   // do something!
   const setMenuHeight = () => {
-    $container.querySelectorAll('ul').forEach($ul => {
-      $ul.style.height = `${$ul.closest('.active') ? $ul.scrollHeight : 0}px`;
+    $container.querySelectorAll('.active > ul').forEach($activeUl => {
+      $activeUl.style.height = `${$activeUl.scrollHeight}px`;
     });
   };
 
