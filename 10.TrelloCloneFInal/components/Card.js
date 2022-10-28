@@ -6,7 +6,8 @@ class Card extends Component {
 
     return `    
       <h3>${title}</h3>
-      ${description ? `<i class='bx bx-signal-3 bx-rotate-90 bx-flip-horizontal'></i>` : ''}
+      ${description ? `<box-icon name="signal-3" rotate="90"></box-icon>` : ''}
+      <box-icon class="hidden" name="pencil"></box-icon>
     `;
   }
 }
