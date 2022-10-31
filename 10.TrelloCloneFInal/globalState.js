@@ -27,11 +27,11 @@ let globalState = {
       isAddingCard: false,
     },
   ],
-  isAddingList: null,
+  isAddingList: true,
 };
 
 // 다른 방법을 생각해보자..
-globalState.isAddingList = globalState.boards.length === 0;
+// globalState.isAddingList = globalState.boards.length === 0;
 
 const setGlobalState = newState => {
   globalState = { ...globalState, ...newState };

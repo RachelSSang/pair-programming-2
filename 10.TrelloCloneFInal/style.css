@@ -36,6 +36,8 @@ h2 {
 
 ul {
   list-style: none;
+  /* overflow-x: scroll; */
+  /* height: 100vh; */
 }
 
 button {
