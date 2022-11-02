@@ -9,7 +9,7 @@ class List extends Component {
     <li data-list-id="${id}" class="list-item">
       ${
         isEditingTitle
-          ? `<input type="text" value="${title}" class="title-input">`
+          ? `<input type="text" value="${title}" class="title-input" maxlength="18">`
           : `<h2 class="list-title">${title}</h2>`
       }
       <ul class="card-container">
@@ -39,16 +39,30 @@ class List extends Component {
         type: 'click',
         selector: '.list-title',
         handler: e => {
-          const targetId = +e.target.closest('.list-item').dataset.listId;
+          const parentNode = e.target.closest('.list-item');
+          const targetId = +parentNode.dataset.listId;
           list.toggleIsEditingTitle(targetId);
+          parentNode.querySelector('.title-input').select();
         },
       },
+      // {
+      //   type: 'click',
+      //   selector: 'window',
+      //   handler: e => {
+      //     if()
+      //     console.log('FOCUSOUT');
+      //     console.dir(e.target);
+      //     const parentNode = e.target.closest('.list-item');
+      //     console.log(parentNode);
+      //     const targetId = +parentNode.dataset.listId;
+      //     list.toggleIsEditingTitle(targetId);
+      //   },
+      // },
       {
-        type: 'keyup',
+        type: 'focusout',
         selector: '.title-input',
         handler: e => {
-          if (e.code !== 'Enter' && e.code !== 'Escape') return;
-
+          console.log('포커스아웃');
           const targetId = +e.target.closest('.list-item').dataset.listId;
           const beforeTitle = globalState.boards.filter(({ id }) => id === targetId)[0].title;
 
@@ -59,11 +73,19 @@ class List extends Component {
         },
       },
       {
+        type: 'keyup',
+        selector: '.title-input',
+        handler: e => {
+          if (e.code !== 'Enter' && e.code !== 'Escape') return;
+          e.target.blur();
+        },
+      },
+      {
         type: 'click',
         selector: '.add-card-btn',
         handler: e => {
           const targetId = +e.target.closest('.list-item').dataset.listId;
-          list.toggleIsAddingCard(targetId);
+          list.toggleIsEditingTitle(targetId);
         },
       },
       {
