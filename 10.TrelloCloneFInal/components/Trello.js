@@ -1,10 +1,11 @@
 import Component from '../library/core/Component.js';
 import List from './List.js';
-import { globalState, trello, list } from '../globalState.js';
+import Popup from './Popup.js';
+import { globalState, trello, list, modal } from '../globalState.js';
 
 class Trello extends Component {
   render() {
-    const { boards, isAddingList } = globalState;
+    const { boards, isAddingList, isModalOpened } = globalState;
     return `
       <h1>
         <box-icon name="trello" type="logo" size="sm" color="#ffffff" flip="vertical"></box-icon>
@@ -25,6 +26,7 @@ class Trello extends Component {
             : `<li><button class="add-list-btn">+ Add another list</button></li>`
         }
       </ul>
+      ${new Popup().render()}
     `;
   }
 

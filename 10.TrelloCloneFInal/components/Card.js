@@ -1,5 +1,5 @@
 import Component from '../library/core/Component.js';
-import { card } from '../globalState.js';
+import { card, modal } from '../globalState.js';
 
 class Card extends Component {
   render() {
@@ -17,6 +17,18 @@ class Card extends Component {
 
   addEventListener() {
     return [
+      {
+        type: 'click',
+        selector: '.card-item',
+        handler: e => {
+          if (e.target.closest('.remove-card-btn')) return;
+          const cardId = +e.target.closest('.card-item').dataset.cardId;
+          const listId = +e.target.closest('.list-item').dataset.listId;
+          const cardClick = new CustomEvent('cardClick', { detail: { cardId, listId } });
+          document.getElementById('root').dispatchEvent(cardClick);
+          modal.toggle();
+        },
+      },
       {
         type: 'click',
         selector: '.remove-card-btn',

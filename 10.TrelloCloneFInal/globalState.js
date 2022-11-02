@@ -28,10 +28,8 @@ let globalState = {
     },
   ],
   isAddingList: true,
+  isModalOpened: false,
 };
-
-// 다른 방법을 생각해보자..
-// globalState.isAddingList = globalState.boards.length === 0;
 
 const setGlobalState = newState => {
   globalState = { ...globalState, ...newState };
@@ -151,4 +149,11 @@ const card = {
   },
 };
 
-export { globalState, setGlobalState, trello, list, card };
+const modal = {
+  toggle() {
+    const { isModalOpened } = globalState;
+    setGlobalState({ isModalOpened: !isModalOpened });
+  },
+};
+
+export { globalState, setGlobalState, trello, list, card, modal };
