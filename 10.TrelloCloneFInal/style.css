@@ -47,6 +47,11 @@ button {
 }
 
 box-icon {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+box-icon[name='signal-3'] {
   transform: scaleY(-1);
 }
 
@@ -59,20 +64,81 @@ box-icon {
 
 .list-item {
   display: flex;
+  position: relative;
   flex-direction: column;
   gap: 0.8rem;
   padding: 0.8rem;
   min-width: 20rem;
+  max-width: 20rem;
   border-radius: 0.2rem;
   background-color: lightgray;
   align-self: flex-start;
 }
 
-.title-input {
-  padding: 0.8rem;
+.list-title {
+  width: 100%;
   height: 2rem;
+  overflow-wrap: break-word;
+  font-weight: bold;
+  text-indent: 0.5rem;
+}
+
+.title-input,
+.add-list-form input {
+  width: 100%;
+  height: 2rem;
+  line-height: 2rem;
   border: none;
   border-radius: 0.2rem;
+  font-size: 1rem;
+  font-family: inherit;
+  font-weight: bold;
+  box-sizing: border-box;
+  text-indent: 0.5rem;
+  z-index: 1000;
+}
+
+.add-list-form {
+  padding: 0.8rem;
+  width: 20rem;
+  border-radius: 0.2rem;
+  background-color: lightgray;
+}
+
+.add-list-form input {
+  margin-bottom: 0.8rem;
+}
+
+.add-list-form button {
+  vertical-align: middle;
+}
+
+.add-list-form button[type='submit'] {
+  width: 5rem;
+  height: 2rem;
+  background-color: #3b63b2;
+  color: white;
+  border-radius: 0.2rem;
+}
+
+.add-list-form box-icon {
+  height: inherit;
+}
+
+.add-list-btn {
+  padding: 0.8rem;
+  width: 20rem;
+  border-radius: 0.2rem;
+  text-align: left;
+  color: white;
+  background-color: rgba(256, 256, 256, 0.2);
+}
+
+.remove-list-btn {
+  position: absolute;
+  right: 0.8rem;
+  top: 0.8rem;
+  width: fit-content;
 }
 
 .card-container {
@@ -82,10 +148,12 @@ box-icon {
 }
 
 .card-item {
+  position: relative;
   padding: 0.8rem;
   border-radius: 0.2rem;
   box-shadow: 0 0.1rem gray;
   background-color: white;
+  cursor: pointer;
 }
 
 .add-card-form {
@@ -94,10 +162,10 @@ box-icon {
   gap: 0.8rem;
 }
 
-.add-card-form textarea {
+.add-card-form input {
   padding: 0.8rem;
   width: 100%;
-  height: 4rem;
+  height: 2rem;
   border: none;
 }
 
@@ -115,11 +183,80 @@ box-icon {
   border-radius: 0.2rem;
 }
 
-.add-list-btn {
-  padding: 0.8rem;
-  width: 20rem;
+.add-card-btn {
+  padding: 0.5rem;
+  color: #49546d;
+}
+
+.remove-card-btn {
+  position: absolute;
+  right: 0.8rem;
+  top: 0.8rem;
+}
+
+.modal-wrapper {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  z-index: 9999;
+}
+
+.modal {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  width: 45rem;
+  height: 15rem;
+  margin: 2rem auto;
   border-radius: 0.2rem;
-  text-align: left;
-  color: white;
-  background-color: rgba(256, 256, 256, 0.2);
+  padding: 2.5rem 4rem 2.5rem 5rem;
+  background-color: white;
+}
+
+.modal-card-title {
+  position: relative;
+}
+
+.modal-card-title box-icon {
+  position: absolute;
+  left: -2.5rem;
+  fill: #49546d;
+}
+
+.modal-card-title h3 {
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.modal-card-title p {
+  color: #49546d;
+}
+
+.modal-card-title p span {
+  text-decoration: underline;
+}
+
+.modal-description {
+  position: relative;
+}
+
+.modal-description h4 {
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+}
+
+.modal-description box-icon {
+  position: absolute;
+  left: -2.5rem;
+  fill: #49546d;
+}
+
+.close-modal-btn {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
 }
