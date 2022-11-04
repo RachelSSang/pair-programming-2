@@ -1,5 +1,5 @@
 import Component from '../library/core/Component.js';
-import { card, modal } from '../globalState.js';
+import { card, modal } from '../trelloState.js';
 
 class Card extends Component {
   render() {
@@ -33,9 +33,9 @@ class Card extends Component {
         type: 'click',
         selector: '.remove-card-btn',
         handler: e => {
-          const targetId = +e.target.closest('.card-item').dataset.cardId;
-          const targetListId = +e.target.closest('.list-item').dataset.listId;
-          card.remove(targetListId, targetId);
+          const cardId = +e.target.closest('.card-item').dataset.cardId;
+          const listId = +e.target.closest('.list-item').dataset.listId;
+          card.remove(listId, cardId);
         },
       },
     ];

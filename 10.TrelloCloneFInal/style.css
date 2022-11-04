@@ -8,10 +8,19 @@
   display: none;
 }
 
+html {
+  height: 100%;
+}
+
 body {
+  min-height: 100%;
   color: #121f3d;
   background-color: #0b64b2;
 }
+
+/* #root {
+  margin-bottom:;
+} */
 
 h1 {
   display: flex;
@@ -83,8 +92,7 @@ box-icon[name='signal-3'] {
   text-indent: 0.5rem;
 }
 
-.title-input,
-.add-list-form input {
+.list-title-input {
   width: 100%;
   height: 2rem;
   line-height: 2rem;
@@ -98,22 +106,35 @@ box-icon[name='signal-3'] {
   z-index: 1000;
 }
 
-.add-list-form {
+.add-list-wrapper {
   padding: 0.8rem;
-  width: 20rem;
+  min-width: 20rem;
   border-radius: 0.2rem;
   background-color: lightgray;
 }
 
-.add-list-form input {
+.add-list-input {
+  width: 100%;
+  height: 2rem;
+  max-height: 10rem;
+  line-height: 2rem;
+  border: none;
+  border-radius: 0.2rem;
+  font-size: 1rem;
+  font-family: inherit;
+  font-weight: bold;
+  box-sizing: border-box;
+  text-indent: 0.5rem;
+  z-index: 1000;
   margin-bottom: 0.8rem;
+  resize: none;
 }
 
-.add-list-form button {
+.add-list-wrapper button {
   vertical-align: middle;
 }
 
-.add-list-form button[type='submit'] {
+.add-list-wrapper .save-add-list-btn {
   width: 5rem;
   height: 2rem;
   background-color: #3b63b2;
@@ -121,7 +142,7 @@ box-icon[name='signal-3'] {
   border-radius: 0.2rem;
 }
 
-.add-list-form box-icon {
+.add-list-wrapper box-icon {
   height: inherit;
 }
 

@@ -1,55 +1,33 @@
 import Component from '../library/core/Component.js';
 import Card from './Card.js';
-import { trelloState, list, card } from '../trelloState.js';
+import { list, card } from '../trelloState.js';
 
 class List extends Component {
   render() {
-    const { id, title, cards, isEditingTitle, isAddingCard } = this.props.board;
-
-    // 조건부 렌더링 방식
-    // return `
-    // <li data-list-id="${id}" class="list-item">
-    //   ${
-    //     isEditingTitle
-    //       ? `<input type="text" value="${title}" class="list-title-input" maxlength="18">`
-    //       : `<h2 class="list-title">${title}</h2>`
-    //   }
-    //   <ul class="card-container">
-    //     ${cards.map(card => new Card({ card }).render()).join('')}
-    //       ${
-    //         isAddingCard
-    //           ? `<li>
-    //               <form class="add-card-form">
-    //                 <input row="1" placeholder="Enter a title for this card..."></input>
-    //                 <div class="button-container">
-    //                   <button type="submit" class="submit-btn">Add card</button>
-    //                   <button class="close-card-form-btn"><box-icon name="x"></box-icon></button>
-    //                 </div>
-    //               </form>
-    //             </li>`
-    //           : `<li><button class="add-card-btn">+ Add a card</button></li>`
-    //       }
-    //   </ul>
-    //   <button class="remove-list-btn"><box-icon name='x'></box-icon></button>
-    // </li>
-    // `;
+    const { id, title, cards, isEditingTitle, isAddingCard } = this.props.list;
     return `
     <li data-list-id="${id}" class="list-item">
-      <input type="text" value="${title}" class="list-title-input ${isEditingTitle ? '' : 'hidden'}" maxlength="18">
-      <h2 class="list-title ${isEditingTitle ? 'hidden' : ''}">${title}</h2>
-      
+      ${
+        isEditingTitle
+          ? `
+          <input type="text" value="${title}" class="list-title-input" maxlength="18">`
+          : `<h2 class="list-title">${title}</h2>`
+      }
       <ul class="card-container">
         ${cards.map(card => new Card({ card }).render()).join('')}
-        <li class=${isAddingCard ? '' : 'hidden'}>
-          <form class="add-card-form">
-            <input row="1" placeholder="Enter a title for this card..."></input>
-            <div class="button-container">
-              <button type="submit" class="submit-btn">Add card</button>
-              <button class="close-card-form-btn"><box-icon name="x"></box-icon></button>
-            </div>
-          </form>
-        </li>
-        <li><button class="add-card-btn ${isAddingCard ? 'hidden' : ''}">+ Add a card</button></li>
+          ${
+            isAddingCard
+              ? `<li>
+                  <form class="add-card-form">
+                    <input row="1" placeholder="Enter a title for this card..."></input>
+                    <div class="button-container">
+                      <button type="submit" class="submit-btn">Add card</button>
+                      <button class="close-card-form-btn"><box-icon name="x"></box-icon></button>
+                    </div>
+                  </form>
+                </li>`
+              : `<li><button class="add-card-btn">+ Add a card</button></li>`
+          }
       </ul>
       <button class="remove-list-btn"><box-icon name='x'></box-icon></button>
     </li>
@@ -73,8 +51,7 @@ class List extends Component {
         selector: '.list-title-input',
         handler: e => {
           const targetId = +e.target.closest('.list-item').dataset.listId;
-          const beforeTitle = trelloState.boards.filter(({ id }) => id === targetId)[0].title;
-
+          const beforeTitle = list.getListById(targetId).title;
           const newTitle =
             e.target.value.trim() === '' || e.target.value === beforeTitle ? beforeTitle : e.target.value;
           list.changeTitle(targetId, newTitle);

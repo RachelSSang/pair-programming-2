@@ -30,11 +30,10 @@ class Component {
 
     for (const event of events) {
       /**
-       * event.selector === 'window' => 이벤트 핸들러는 window에 등록된다.
        * event.selector === null => 이벤트 핸들러는 root container에 등록된다.
        * 위와 같은 경우 이벤트 핸들러에 if 문을 삽입해 새롭게 생성할 필요가 없다.
        */
-      if (event.selector === 'window' || event.selector === null) {
+      if (event.selector === null) {
         eventHolder.push(event);
         continue;
       }
@@ -54,6 +53,7 @@ class Component {
         // handler를 monkey patch한다.
         event.handler = e => {
           // e.target이 selector의 하위 요소일 수도 있다.
+          if (selector === 'window') handler(e);
           if (e.target.matches(selector) || e.target.closest(selector)) handler(e);
         };
 
