@@ -27,6 +27,7 @@ class Trello extends Component {
     //   </ul>
     //   ${modal.isOpened ? new Modal().render() : ''}
     // `;
+
     return `
       <h1>
         <box-icon name="trello" type="logo" size="sm" color="#ffffff" flip="vertical"></box-icon>
@@ -42,15 +43,13 @@ class Trello extends Component {
         <li><button class="add-list-btn ${isAddingList ? 'hidden' : ''}">+ Add ${
       lists.length ? 'another' : 'a'
     } list</button></li>
-
       </ul>
       ${modal.isOpened ? new Modal().render() : ''}
     `;
   }
 
   addList(newTitle) {
-    if (newTitle.trim() === '') return;
-    list.add(newTitle);
+    if (newTitle.trim() !== '') list.add(newTitle);
     document.querySelector('.add-list-input').focus();
   }
 
@@ -59,9 +58,9 @@ class Trello extends Component {
       {
         type: 'click',
         selector: '.add-list-btn',
-        handler: () => {
+        handler: e => {
           trello.activeAddingList();
-          document.querySelector('.add-list-input').focus();
+          e.target.closest('.list-container').querySelector('.add-list-input').focus();
         },
       },
       {
@@ -94,8 +93,25 @@ class Trello extends Component {
         type: 'click',
         selector: 'window',
         handler: e => {
-          if (!e.target.matches('.add-list-btn') && !e.target.closest('.add-list-wrapper')) {
-            trello.inactiveAddingList();
+          if (trelloState.isAddingList) {
+            if (!e.target.matches('.add-list-btn') && !e.target.closest('.add-list-wrapper')) {
+              trello.inactiveAddingList();
+            }
+            if (e.target.matches('.add-list-wrapper')) {
+              // console.log(e.target.querySelector('.add-list-input').value);
+              e.target.querySelector('.add-list-input').focus();
+              // e.target.querySelector('.add-list-input').textContent = e.target.querySelector('.add-list-input').value;
+            }
+          } else {
+            console.log('@@');
+            const targetId = trelloState.lists.filter(list => list.isAddingCard)[0]?.id;
+            if (
+              !e.target.closest(`.list-item[data-list-id="${targetId}"]`) ||
+              e.target.closest('.list-title-input') ||
+              e.target.closest('.card-item')
+            )
+              list.inactiveAddingCard(targetId);
+            else e.target.querySelector('.add-card-input')?.focus();
           }
         },
       },

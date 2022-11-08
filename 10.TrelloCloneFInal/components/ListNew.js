@@ -1,6 +1,6 @@
 import Component from '../library/core/Component.js';
 import Card from './Card.js';
-import { list, card } from '../trelloState.js';
+import { trelloState, list, card } from '../trelloState.js';
 
 class List extends Component {
   render() {
@@ -14,21 +14,20 @@ class List extends Component {
       }
       <ul class="card-container">
         ${cards.map(card => new Card({ card }).render()).join('')}
-          ${
-            isAddingCard
-              ? `<li>
-                  <textarea placeholder="Enter a title for this card..." autofocus class="add-card-input"></textarea>
-                  <div class="button-container">
-                    <button class="save-add-card-btn">Add card</button>
-                    <button class="cancle-add-card-btn"><box-icon name="x"></box-icon></button>
-                  </div>
-                </li>`
-              : `<li><button class="add-card-btn">+ Add a card</button></li>`
-          }
+        <li class="add-card-wrapper ${isAddingCard ? '' : 'hidden'}">
+          <textarea placeholder="Enter a title for this card..." autofocus class="add-card-input"></textarea>
+          <button class="save-add-card-btn">Add card</button>
+          <button class="cancle-add-card-btn"><box-icon name="x"></box-icon></button>
+        </li>
+        <li><button class="add-card-btn" ${isAddingCard ? 'hidden' : ''} >+ Add a card</button></li> 
       </ul>
       <button class="remove-list-btn"><box-icon name='x'></box-icon></button>
-    </li>
-    `;
+    </li>`;
+  }
+
+  addCard(targetListId, newTitle) {
+    if (newTitle.trim() !== '') card.add(targetListId, newTitle);
+    document.querySelector('.add-card-input').focus();
   }
 
   addEventListener() {
@@ -45,23 +44,29 @@ class List extends Component {
       },
       {
         type: 'click',
-        selector: '.add-card-btn, .cancle-add-card-btn',
+        selector: '.add-card-btn',
         handler: e => {
           const targetId = +e.target.closest('.list-item').dataset.listId;
-          list.toggleIsAddingCard(targetId);
-          document.querySelector('.add-card-input').focus();
+          trelloState.lists.filter(({ id }) => id !== targetId).forEach(({ id }) => list.inactiveAddingCard(id));
+          list.activeAddingCard(targetId);
+          e.target.closest('.card-container').querySelector('.add-card-input').focus();
         },
       },
-
+      {
+        type: 'click',
+        selector: '.cancle-add-card-btn',
+        handler: e => {
+          const targetListId = +e.target.closest('.list-item').dataset.listId;
+          list.inactiveAddingCard(targetListId);
+        },
+      },
       {
         type: 'click',
         selector: '.save-add-card-btn',
         handler: e => {
           const newCardTitle = e.target.closest('li').querySelector('.add-card-input').value;
-          if (newCardTitle.trim() === '') return;
           const targetId = +e.target.closest('.list-item').dataset.listId;
-          card.add(targetId, newCardTitle);
-          document.querySelector('.add-card-input').focus();
+          this.addCard(targetId, newCardTitle);
         },
       },
       {
@@ -73,16 +78,37 @@ class List extends Component {
           if (e.key === 'Enter') {
             e.preventDefault();
             const newCardTitle = e.target.value;
-            if (newCardTitle.trim() === '') return;
-            card.add(targetId, newCardTitle);
-            document.querySelector('.add-card-input').focus();
+            this.addCard(targetId, newCardTitle);
           }
           if (e.key === 'Escape') {
-            list.toggleIsAddingCard(targetId);
+            list.inactiveAddingCard(targetId);
           }
           e.target.style.height = e.target.scrollHeight + 'px';
         },
       },
+      // {
+      //   type: 'click',
+      //   selector: 'window',
+      //   handler: e => {
+      //     // const targetId = +e.target.closest('.list-item')?.dataset?.listId;
+      //     const targetId = trelloState.lists.filter(list => list.isAddingCard)[0]?.id;
+
+      //     // add-card-btn 또는 list-item의 자식이 아니면 inactive 해라
+      //     if (
+      //       !e.target.closest(`.list-item[data-list-id="${targetId}"]`) ||
+      //       e.target.closest('.list-title-input') ||
+      //       e.target.closest('.card-item')
+      //     ) {
+      //       list.inactiveAddingCard(targetId);
+      //     }
+      //     // if (e.target.closest('.list-title-input') || e.target.closest('.card-item')) {
+      //     //   list.inactiveAddingCard(targetId);
+      //     // }
+      //     // if (e.target.closest(`.list-item[data-list-id="${targetId}"]`)) {
+      //     e.target.querySelector('.add-card-input')?.focus();
+      //     // }
+      //   },
+      // },
 
       //   {
       //    type: 'focusout',

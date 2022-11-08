@@ -82,7 +82,16 @@ const list = {
     );
     setTrelloState({ lists: newLists });
   },
-
+  activeAddingCard(targetListId) {
+    const newLists = trelloState.lists.map(list => (list.id === targetListId ? { ...list, isAddingCard: true } : list));
+    setTrelloState({ lists: newLists });
+  },
+  inactiveAddingCard(targetListId) {
+    const newLists = trelloState.lists.map(list =>
+      list.id === targetListId ? { ...list, isAddingCard: false } : list
+    );
+    setTrelloState({ lists: newLists });
+  },
   toggleIsAddingCard(targetListId) {
     const newLists = trelloState.lists.map(list =>
       list.id === targetListId ? { ...list, isAddingCard: !list.isAddingCard } : list

@@ -113,7 +113,8 @@ box-icon[name='signal-3'] {
   background-color: lightgray;
 }
 
-.add-list-input {
+.add-list-input,
+.add-card-input {
   width: 100%;
   height: 2rem;
   max-height: 10rem;
@@ -130,11 +131,13 @@ box-icon[name='signal-3'] {
   resize: none;
 }
 
-.add-list-wrapper button {
+.add-list-wrapper button,
+.add-card-wrapper button {
   vertical-align: middle;
 }
 
-.add-list-wrapper .save-add-list-btn {
+.add-list-wrapper .save-add-list-btn,
+.add-card-wrapper .save-add-card-btn {
   width: 5rem;
   height: 2rem;
   background-color: #3b63b2;
@@ -142,7 +145,8 @@ box-icon[name='signal-3'] {
   border-radius: 0.2rem;
 }
 
-.add-list-wrapper box-icon {
+.add-list-wrapper box-icon,
+.add-card-wrapper box-icon {
   height: inherit;
 }
 
@@ -177,7 +181,7 @@ box-icon[name='signal-3'] {
   cursor: pointer;
 }
 
-.add-card-form {
+/* .add-card-form {
   display: flex;
   flex-direction: column;
   gap: 0.8rem;
@@ -202,18 +206,18 @@ box-icon[name='signal-3'] {
   background-color: #3b63b2;
   color: white;
   border-radius: 0.2rem;
-}
+} */
 
-.add-card-btn {
+/* .add-card-btn {
   padding: 0.5rem;
   color: #49546d;
-}
+} */
 
-.remove-card-btn {
+/* .remove-card-btn {
   position: absolute;
   right: 0.8rem;
   top: 0.8rem;
-}
+} */
 
 .modal-wrapper {
   position: absolute;
