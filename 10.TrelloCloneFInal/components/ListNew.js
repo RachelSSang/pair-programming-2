@@ -27,7 +27,7 @@ class List extends Component {
 
   addCard(targetListId, newTitle) {
     if (newTitle.trim() !== '') card.add(targetListId, newTitle);
-    document.querySelector('.add-card-input').focus();
+    document.querySelector(`.list-item[data-list-id="${targetListId}"] .add-card-input`).focus();
   }
 
   addEventListener() {
@@ -39,7 +39,9 @@ class List extends Component {
           const parentNode = e.target.closest('.list-item');
           const targetId = +parentNode.dataset.listId;
           list.toggleIsEditingTitle(targetId);
-          parentNode.querySelector('.list-title-input').select();
+          const listTitleInput = parentNode.querySelector('.list-title-input');
+          listTitleInput.style.height = listTitleInput.scrollHeight + 'px';
+          listTitleInput.select();
         },
       },
       {
@@ -70,9 +72,19 @@ class List extends Component {
         },
       },
       {
+        type: 'input',
+        selector: '.add-card-input',
+        handler: e => {
+          e.target.style.height = 0;
+          e.target.style.height = e.target.scrollHeight + 'px';
+        },
+      },
+      {
         type: 'keydown',
         selector: '.add-card-input',
         handler: e => {
+          if (e.isComposing || e.keyCode === 229) return;
+
           const targetId = +e.target.closest('.list-item').dataset.listId;
 
           if (e.key === 'Enter') {
@@ -83,54 +95,36 @@ class List extends Component {
           if (e.key === 'Escape') {
             list.inactiveAddingCard(targetId);
           }
+        },
+      },
+      {
+        type: 'focusout',
+        selector: '.list-title-input',
+        handler: e => {
+          const targetId = +e.target.closest('.list-item').dataset.listId;
+          const beforeTitle = list.getListById(targetId).title;
+          const newTitle =
+            e.target.value.trim() === '' || e.target.value === beforeTitle ? beforeTitle : e.target.value;
+          list.changeTitle(targetId, newTitle);
+          list.toggleIsEditingTitle(targetId);
+        },
+      },
+      {
+        type: 'input',
+        selector: '.list-title-input',
+        handler: e => {
+          e.target.style.height = 0;
           e.target.style.height = e.target.scrollHeight + 'px';
         },
       },
-      // {
-      //   type: 'click',
-      //   selector: 'window',
-      //   handler: e => {
-      //     // const targetId = +e.target.closest('.list-item')?.dataset?.listId;
-      //     const targetId = trelloState.lists.filter(list => list.isAddingCard)[0]?.id;
-
-      //     // add-card-btn 또는 list-item의 자식이 아니면 inactive 해라
-      //     if (
-      //       !e.target.closest(`.list-item[data-list-id="${targetId}"]`) ||
-      //       e.target.closest('.list-title-input') ||
-      //       e.target.closest('.card-item')
-      //     ) {
-      //       list.inactiveAddingCard(targetId);
-      //     }
-      //     // if (e.target.closest('.list-title-input') || e.target.closest('.card-item')) {
-      //     //   list.inactiveAddingCard(targetId);
-      //     // }
-      //     // if (e.target.closest(`.list-item[data-list-id="${targetId}"]`)) {
-      //     e.target.querySelector('.add-card-input')?.focus();
-      //     // }
-      //   },
-      // },
-
-      //   {
-      //    type: 'focusout',
-      //    selector: '.list-title-input',
-      //    handler: e => {
-      //      const targetId = +e.target.closest('.list-item').dataset.listId;
-      //      const beforeTitle = list.getListById(targetId).title;
-      //      const newTitle =
-      //        e.target.value.trim() === '' || e.target.value === beforeTitle ? beforeTitle : e.target.value;
-      //      list.changeTitle(targetId, newTitle);
-      //      list.toggleIsEditingTitle(targetId);
-      //    },
-      //  },
-      //  {
-      //    type: 'keyup',
-      //    selector: '.list-title-input',
-      //    handler: e => {
-      //      if (e.code !== 'Enter' && e.code !== 'Escape') return;
-      //      e.target.blur();
-      //    },
-      //  },
-
+      {
+        type: 'keydown',
+        selector: '.list-title-input',
+        handler: e => {
+          if (e.code !== 'Enter' && e.code !== 'Escape') return;
+          e.target.blur();
+        },
+      },
       {
         type: 'click',
         selector: '.remove-list-btn',
@@ -139,43 +133,6 @@ class List extends Component {
           list.remove(targetId);
         },
       },
-
-      //  {
-      //    type: 'submit',
-      //    selector: '.add-card-form',
-      //    handler: e => {
-      //      e.preventDefault();
-      //      const newCardTitle = e.target[0].value;
-      //      if (newCardTitle.trim() === '') return;
-      //      const targetId = +e.target.closest('.list-item').dataset.listId;
-      //      card.add(targetId, newCardTitle);
-      //    },
-      //  },
-      // {
-      //   type: 'click',
-      //   selector: '.close-card-form-btn',
-      //   handler: e => {
-      //     const targetId = +e.target.closest('.list-item').dataset.listId;
-      //     list.toggleIsAddingCard(targetId);
-      //   },
-      // },
-      //    {
-      //      type: 'keyup',
-      //      selector: '.close-card-form-btn',
-      //      handler: e => {
-      //        const targetId = +e.target.closest('.list-item').dataset.listId;
-      //        list.toggleIsAddingCard(targetId);
-      //      },
-      //    },
-      // {
-      //   type: 'keyup',
-      //   selector: '.add-card-form > input',
-      //   handler: e => {
-      //     if (e.key !== 'Escape') return;
-      //     const targetId = +e.target.closest('.list-item').dataset.listId;
-      //     list.toggleIsAddingCard(targetId);
-      //   },
-      // },
     ];
   }
 }

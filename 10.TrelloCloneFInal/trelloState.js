@@ -92,13 +92,6 @@ const list = {
     );
     setTrelloState({ lists: newLists });
   },
-  toggleIsAddingCard(targetListId) {
-    const newLists = trelloState.lists.map(list =>
-      list.id === targetListId ? { ...list, isAddingCard: !list.isAddingCard } : list
-    );
-    setTrelloState({ lists: newLists });
-  },
-
   getListById(targetListId) {
     const [targetList] = trelloState.lists.filter(({ id }) => id === targetListId);
     return targetList;
@@ -156,12 +149,28 @@ const modal = {
     setTrelloState({ modal: { ...modal, isOpened: !isOpened } });
   },
 
+  activeIsEditingTitle() {
+    const { modal } = trelloState;
+    setTrelloState({ modal: { ...modal, isEditingTitle: true } });
+  },
+  inactiveIsEditingTitle() {
+    const { modal } = trelloState;
+    setTrelloState({ modal: { ...modal, isEditingTitle: false } });
+  },
   toggleIsEditingTitle() {
     const { modal } = trelloState;
     const { isEditingTitle } = modal;
     setTrelloState({ modal: { ...modal, isEditingTitle: !isEditingTitle } });
   },
 
+  activeIsEditingDescription() {
+    const { modal } = trelloState;
+    setTrelloState({ modal: { ...modal, isEditingDescription: true } });
+  },
+  inactiveIsEditingDescription() {
+    const { modal } = trelloState;
+    setTrelloState({ modal: { ...modal, isEditingDescription: false } });
+  },
   toggleIsEditingDescription() {
     const { modal } = trelloState;
     const { isEditingDescription } = modal;
