@@ -1,6 +1,7 @@
 import Component from '../library/core/Component.js';
 import Card from './Card.js';
 import { trelloState, list, card } from '../trelloState.js';
+import sanitizeHTML from '../utils/sanitizeHTML.js';
 
 class List extends Component {
   render() {
@@ -26,7 +27,7 @@ class List extends Component {
   }
 
   addCard(targetListId, newTitle) {
-    if (newTitle.trim() !== '') card.add(targetListId, newTitle);
+    if (newTitle.trim() !== '') card.add(targetListId, sanitizeHTML(newTitle));
     document.querySelector(`.list-item[data-list-id="${targetListId}"] .add-card-input`).focus();
   }
 
@@ -105,7 +106,7 @@ class List extends Component {
           const beforeTitle = list.getListById(targetId).title;
           const newTitle =
             e.target.value.trim() === '' || e.target.value === beforeTitle ? beforeTitle : e.target.value;
-          list.changeTitle(targetId, newTitle);
+          list.changeTitle(targetId, sanitizeHTML(newTitle));
           list.toggleIsEditingTitle(targetId);
         },
       },

@@ -1,5 +1,6 @@
 import Component from '../library/core/Component.js';
 import { trelloState, list, card, modal } from '../trelloState.js';
+import sanitizeHTML from '../utils/sanitizeHTML.js';
 
 let listId = 1;
 let cardId = 1;
@@ -106,7 +107,7 @@ class Modal extends Component {
         handler: e => {
           const beforeTitle = card.getCardById(listId, cardId).title;
           const newTitle = e.target.value.trim() === '' ? beforeTitle : e.target.value;
-          card.changeTitle(listId, cardId, newTitle);
+          card.changeTitle(listId, cardId, sanitizeHTML(newTitle));
           modal.inactiveIsEditingTitle();
         },
       },
@@ -153,7 +154,7 @@ class Modal extends Component {
           const newDescription = e.target
             .closest('.modal-description-wrapper')
             .querySelector('.modal-description-input').value;
-          card.changeDescription(listId, cardId, newDescription);
+          card.changeDescription(listId, cardId, sanitizeHTML(newDescription));
           modal.inactiveIsEditingDescription();
         },
       },
@@ -198,15 +199,13 @@ class Modal extends Component {
           }
           if (!trelloState.modal.isEditingDescription) return;
           e.target.closest('.modal').querySelector('.modal-description-input').focus();
-          // if (e.target.closest('.modal') && !e.target.closest('.close-modal-btn')) return;
-          // modal.toggle();
         },
       },
+      // TODO: Escape 입력시 모달 창 닫기
       {
         type: 'keydown',
         selector: '.modal-wrapper',
         handler: e => {
-          console.log(e.key);
           if (e.key !== 'Escape') return;
           if (e.target.matches('.modal-wrapper')) {
             if (trelloState.modal.isEditingDescription) e.target.querySelector('.modal-description-input').focus();
@@ -215,8 +214,6 @@ class Modal extends Component {
           }
           if (!trelloState.modal.isEditingDescription) return;
           e.target.closest('.modal').querySelector('.modal-description-input').focus();
-          // if (e.target.closest('.modal') && !e.target.closest('.close-modal-btn')) return;
-          // modal.toggle();
         },
       },
     ];

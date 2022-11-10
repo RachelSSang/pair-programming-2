@@ -2,6 +2,7 @@ import Component from '../library/core/Component.js';
 import List from './ListNew.js';
 import Modal from './Modal.js';
 import { trelloState, trello, list } from '../trelloState.js';
+import sanitizeHTML from '../utils/sanitizeHTML.js';
 
 class Trello extends Component {
   render() {
@@ -48,7 +49,7 @@ class Trello extends Component {
   }
 
   addList(newTitle) {
-    if (newTitle.trim() !== '') list.add(newTitle);
+    if (newTitle.trim() !== '') list.add(sanitizeHTML(newTitle));
     document.querySelector('.add-list-input').focus();
   }
 
