@@ -66,7 +66,7 @@ box-icon[name='signal-3'] {
   gap: 1.5rem;
 }
 
-.draggable-list-item {
+.list-item {
   display: flex;
   flex-direction: column;
   position: relative;
@@ -74,9 +74,6 @@ box-icon[name='signal-3'] {
   min-width: 20rem;
   max-width: 20rem;
   height: fit-content;
-}
-
-.list-item {
   padding: 0.8rem;
   background-color: lightgray;
   border-radius: 0.2rem;
@@ -88,6 +85,7 @@ box-icon[name='signal-3'] {
   height: auto;
   word-break: break-all;
   font-weight: bold;
+  user-select: none;
 }
 
 .list-title {
@@ -216,6 +214,7 @@ box-icon[name='signal-3'] {
 
 .card-title {
   font-size: 1rem;
+  user-select: none;
 }
 
 /* .add-card-form {
@@ -249,6 +248,10 @@ box-icon[name='signal-3'] {
   padding: 0.5rem;
   color: #49546d;
 } */
+
+.add-card-btn {
+  user-select: none;
+}
 
 .remove-card-btn {
   display: none;
@@ -351,10 +354,5 @@ box-icon[name='signal-3'] {
 
 .ghost {
   position: absolute;
-  left: -9999px;
-}
-
-.ghost .list-item {
-  opacity: 1;
   transform: rotate(5deg);
 }

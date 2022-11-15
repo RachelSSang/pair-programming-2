@@ -4,8 +4,29 @@ import render from './library/dom/render.js';
 let trelloState = {
   lists: [
     {
+      id: 4,
+      title: 'Tasks To Do4',
+      cards: [
+        { id: 1, title: 'React', description: 'learning react!' },
+        { id: 2, title: 'TypeScript', description: '' },
+        { id: 3, title: 'younha!!', description: '' },
+      ],
+      isEditingTitle: false,
+      isAddingCard: false,
+    },
+    {
+      id: 3,
+      title: 'Tasks To Do3',
+      cards: [
+        { id: 1, title: 'React', description: 'learning react!' },
+        { id: 2, title: 'TypeScript', description: '' },
+      ],
+      isEditingTitle: false,
+      isAddingCard: false,
+    },
+    {
       id: 1,
-      title: 'Tasks To Do',
+      title: 'Tasks To Do1',
       cards: [
         { id: 1, title: 'React', description: 'learning react!' },
         { id: 2, title: 'TypeScript', description: '' },
@@ -70,6 +91,15 @@ const list = {
   },
 
   // TODO: 리스트 순서 변경
+  swap(listId1, listId2) {
+    const newLists = [...trelloState.lists];
+    const [idx1, idx2] = [
+      newLists.findIndex(({ id }) => id === +listId1),
+      newLists.findIndex(({ id }) => id === +listId2),
+    ];
+    [newLists[idx1], newLists[idx2]] = [newLists[idx2], newLists[idx1]];
+    setTrelloState({ lists: newLists });
+  },
 
   changeTitle(targetListId, newTitle) {
     const newLists = trelloState.lists.map(list => (list.id === targetListId ? { ...list, title: newTitle } : list));
@@ -118,6 +148,16 @@ const card = {
   },
 
   // 카드 순서 변경
+  swap(targetListId, cardId1, cardId2) {
+    const newCards = [...list.getListById(targetListId).cards];
+    const [idx1, idx2] = [
+      newCards.findIndex(({ id }) => id === cardId1),
+      newCards.findIndex(({ id }) => id === cardId2),
+    ];
+    [newCards[idx1], newCards[idx2]] = [newCards[idx2], newCards[idx1]];
+    const newLists = trelloState.lists.map(list => (list.id === targetListId ? { ...list, cards: newCards } : list));
+    setTrelloState({ lists: newLists });
+  },
 
   changeTitle(targetListId, targetCardId, newTitle) {
     const newCards = list
@@ -157,6 +197,7 @@ const modal = {
     const { modal } = trelloState;
     setTrelloState({ modal: { ...modal, isEditingTitle: false } });
   },
+
   toggleIsEditingTitle() {
     const { modal } = trelloState;
     const { isEditingTitle } = modal;
@@ -171,6 +212,7 @@ const modal = {
     const { modal } = trelloState;
     setTrelloState({ modal: { ...modal, isEditingDescription: false } });
   },
+
   toggleIsEditingDescription() {
     const { modal } = trelloState;
     const { isEditingDescription } = modal;
