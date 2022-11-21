@@ -4,27 +4,6 @@ import render from './library/dom/render.js';
 let trelloState = {
   lists: [
     {
-      id: 4,
-      title: 'Tasks To Do4',
-      cards: [
-        { id: 1, title: 'React', description: 'learning react!' },
-        { id: 2, title: 'TypeScript', description: '' },
-        { id: 3, title: 'younha!!', description: '' },
-      ],
-      isEditingTitle: false,
-      isAddingCard: false,
-    },
-    {
-      id: 3,
-      title: 'Tasks To Do3',
-      cards: [
-        { id: 1, title: 'React', description: 'learning react!' },
-        { id: 2, title: 'TypeScript', description: '' },
-      ],
-      isEditingTitle: false,
-      isAddingCard: false,
-    },
-    {
       id: 1,
       title: 'Tasks To Do1',
       cards: [

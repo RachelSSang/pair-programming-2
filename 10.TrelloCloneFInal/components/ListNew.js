@@ -4,12 +4,16 @@ import { trelloState, list, card } from '../trelloState.js';
 import sanitizeHTML from '../utils/sanitizeHTML.js';
 
 let draggingId = -1;
+let mouseDownPosition = {
+  x: -1,
+  y: -1,
+};
 
 class List extends Component {
   render() {
     const { id, title, cards, isEditingTitle, isAddingCard } = this.props.list;
     return `
-    <li data-list-id="${id}" class="list-item ${id === +draggingId ? 'dragging' : ''}">
+    <li data-list-id="${id}" class="list-item ${id === draggingId ? 'dragging' : ''}">
       ${
         isEditingTitle
           ? `<textarea autofocus class="list-title-input">${title}</textarea>`
@@ -140,16 +144,17 @@ class List extends Component {
         type: 'mousedown',
         selector: '.list-item',
         handler: e => {
-          console.log('mousedown');
+          console.log('mousedown', draggingId, e);
 
           const ghostNode = e.target.closest('.list-item').cloneNode(true);
           ghostNode.classList.add('ghost');
+          ghostNode.style.display = 'none';
           document.body.appendChild(ghostNode);
-          ghostNode.style.left = e.x + 'px';
-          ghostNode.style.top = e.y + 'px';
 
-          // e.target.closest('.list-item').classList.add('dragging');
-          draggingId = e.target.closest('.list-item').dataset.listId;
+          draggingId = +e.target.closest('.list-item').dataset.listId;
+          mouseDownPosition.x = e.offsetX;
+          mouseDownPosition.y = e.offsetY;
+          console.log(e.target);
         },
       },
       {
@@ -159,36 +164,63 @@ class List extends Component {
           const ghostNode = document.querySelector('.ghost');
 
           if (!ghostNode) return;
+          ghostNode.style.display = 'block';
+          // ghostNode.style.transform = `translate(${e.clientX}px, ${e.clientY}px)`;
+          ghostNode.style.left = e.clientX - mouseDownPosition.x + 'px';
+          ghostNode.style.top = e.clientY - mouseDownPosition.y + 'px';
+          // ghostNode.style.left = e.clientX + 'px';
+          // ghostNode.style.top = e.clientY + 'px';
 
-          ghostNode.style.left = e.x + 'px';
-          ghostNode.style.top = e.y + 'px';
+          if (!e.target.closest('.list-item')) return;
+
+          // 회고: 성능 개선
+          if (draggingId === +e.target.closest('.list-item').dataset.listId) {
+            console.log('no swap mousemove');
+
+            document.querySelector(`.list-item[data-list-id="${draggingId}"]`)?.classList.add('dragging');
+            return;
+          }
+          console.log(
+            'swap mousemove',
+            e.target,
+            draggingId,
+            +e.target.closest('.list-item').dataset.listId,
+            +ghostNode.dataset.listId
+          );
+
+          draggingId = +e.target.closest('.list-item').dataset.listId;
+          list.swap(draggingId, +ghostNode.dataset.listId);
         },
       },
-      {
-        type: 'mouseover',
-        selector: '.list-item',
-        handler: e => {
-          // console.log('mouseover');
-          const ghostNode = document.querySelector('.ghost');
-          if (!ghostNode) return;
-          console.log(draggingId);
-          list.swap(e.target.closest('.list-item').dataset.listId, ghostNode.dataset.listId);
-          // draggingId = e.target.closest('.list-item').dataset.listId;
-        },
-      },
+      // {
+      //   type: 'mouseover',
+      //   selector: '.list-item',
+      //   handler: e => {
+      //     // console.log('mouseover');
+      //     const ghostNode = document.querySelector('.ghost');
+      //     if (!ghostNode) return;
+      //     console.log(draggingId);
+      //     list.swap(e.target.closest('.list-item').dataset.listId, ghostNode.dataset.listId);
+      //     // draggingId = e.target.closest('.list-item').dataset.listId;
+      //   },
+      // },
       {
         type: 'mouseup',
         selector: 'window',
         handler: e => {
-          console.log('mouseup');
           const ghostNode = document.querySelector('.ghost');
 
           if (!ghostNode) return;
 
           document.body.removeChild(ghostNode);
           draggingId = -1;
-          if (!e.target.closest('.list-item')) return;
-          list.swap(e.target.closest('.list-item').dataset.listId, ghostNode.dataset.listId);
+
+          if (!e.target.closest('.list-item')) {
+            document.querySelector('.dragging')?.classList.remove('dragging');
+            return;
+          }
+
+          list.swap(+e.target.closest('.list-item').dataset.listId, +ghostNode.dataset.listId);
 
           // document.querySelector('.dragging')?.classList.remove('dragging');
         },
