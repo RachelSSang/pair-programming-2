@@ -156,6 +156,7 @@ class List extends Component {
             draggingCardListId = +e.target.closest('.list-item').dataset.listId;
           }
 
+          console.log('mousedown', draggingListId, draggingCardListId, draggingCardId);
           mouseDownPosition.x =
             e.offsetX - e.target.closest('.draggable').getBoundingClientRect().x + e.target.getBoundingClientRect().x;
           mouseDownPosition.y =
@@ -173,51 +174,71 @@ class List extends Component {
           ghostNode.style.left = e.clientX - mouseDownPosition.x + 'px';
           ghostNode.style.top = e.clientY - mouseDownPosition.y + 'px';
 
-          if (!e.target.closest('.list-item.draggable')) return;
+          const hoveredElements = document.elementsFromPoint(e.clientX, e.clientY);
+          // console.log(hoveredElements);
+          let hoverListItemId = -1;
 
-          // TODO: 성능 개선 -> 다시하기
-          // 리스트 아이템을 이동중이었따ㅣ?
-          if (ghostNode.matches('.list-item')) {
-            console.log(e.target);
-            console.log(draggingListId, +e.target.closest('.list-item.draggable').dataset.listId);
-            if (draggingListId === +e.target.closest('.list-item.draggable').dataset.listId) {
-              // TODO: 왜 여기서?
-              document.querySelector(`.list-item[data-list-id="${draggingListId}"]`)?.classList.add('dragging');
-              return;
+          hoveredElements.forEach(hoverElement => {
+            if (
+              hoverElement.matches('.list-item:not(.ghost)') &&
+              !hoverElement.matches(`.list-item[data-list-id="${draggingListId}"]`)
+            ) {
+              hoverListItemId = +hoverElement.dataset.listId;
+              console.log(hoverListItemId);
             }
+          });
 
-            console.log('list insert');
+          document.querySelector(`.list-item[data-list-id="${draggingListId}"]`)?.classList.add('dragging');
+
+          if (hoverListItemId !== -1) {
+            // console.log(hoverListItemId);
+
             draggingListId = +e.target.closest('.list-item.draggable').dataset.listId;
-            console.log('@@@@@', draggingListId, +ghostNode.dataset.listId);
-            list.insert(+ghostNode.dataset.listId, draggingListId);
+            list.insert(+ghostNode.dataset.listId, hoverListItemId);
           }
-          // 카드 아이템을 이동중이어따ㅏ??
-          else if (ghostNode.matches('.card-item')) {
-            // console.log(draggingListId, draggingCardId, draggingCardListId, e.target);
 
-            document
-              .querySelector(
-                `.list-item[data-list-id="${draggingCardListId}"] .card-item[data-card-id="${draggingCardId}"]`
-              )
-              ?.classList.add('dragging');
+          // if (!e.target.closest('.list-item.draggable')) return;
 
-            console.log('card insert');
-            // draggingCardId = +e.target.closest('.draggable').dataset.cardId;
-            // draggingCardListId = +e.target.closest('.list-item').dataset.listId;
-          }
+          // // TODO: 성능 개선 -> 다시하기
+          // // 리스트 아이템을 이동중이었따ㅣ?
+          // if (ghostNode.matches('.list-item')) {
+          //   if (draggingListId === +e.target.closest('.list-item.draggable').dataset.listId) {
+          //     // TODO: 왜 여기서?
+          //     document.querySelector(`.list-item[data-list-id="${draggingListId}"]`)?.classList.add('dragging');
+          //     return;
+          //   }
+          //   draggingListId = +e.target.closest('.list-item.draggable').dataset.listId;
+          //   list.insert(+ghostNode.dataset.listId, draggingListId);
+          // }
+          // // 카드 아이템을 이동중이어따ㅏ??
+          // else if (ghostNode.matches('.card-item')) {
+          //   document
+          //     .querySelector(
+          //       `.list-item[data-list-id="${draggingCardListId}"] .card-item[data-card-id="${draggingCardId}"]`
+          //     )
+          //     ?.classList.add('dragging');
+          //   // draggingCardId = +e.target.closest('.draggable').dataset.cardId;
+          //   // draggingCardListId = +e.target.closest('.list-item').dataset.listId;
+          // }
         },
       },
       // {
       //   type: 'mouseover',
-      //   selector: '.list-item',
+      //   selector: 'window',
       //   handler: e => {
-      //     // console.log('mouseover');
+      //     console.log(e.target);
       //     const ghostNode = document.querySelector('.ghost');
       //     if (!ghostNode) return;
 
-      //     console.log(draggingListId);
-      //     list.insert(e.target.closest('.list-item').dataset.listId, ghostNode.dataset.listId);
-      //     // draggingListId = e.target.closest('.list-item').dataset.listId;
+      //     const x = e.clientX;
+      //     const y = e.clientY;
+
+      //     const hoveredElements = document.elementsFromPoint(x, y);
+      //     // hoveredElements.forEach(hoveredElement => console.log(hoveredElement));
+
+      //     // console.log(draggingListId);
+      //     // list.insert(e.target.closest('.list-item').dataset.listId, ghostNode.dataset.listId);
+      //     // // draggingListId = e.target.closest('.list-item').dataset.listId;
       //   },
       // },
       {
@@ -226,7 +247,6 @@ class List extends Component {
         handler: e => {
           const ghostNode = document.querySelector('.ghost');
           if (!ghostNode) return;
-
           document.body.removeChild(ghostNode);
 
           // if (e.target.closest('.draggable').matches('.list-item')) {
