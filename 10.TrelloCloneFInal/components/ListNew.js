@@ -3,17 +3,16 @@ import Card from './Card.js';
 import { trelloState, list, card } from '../trelloState.js';
 import sanitizeHTML from '../utils/sanitizeHTML.js';
 
-let draggingId = -1;
-let mouseDownPosition = {
-  x: -1,
-  y: -1,
-};
+let draggingListId = -1;
+let draggingCardId = -1;
+let draggingCardListId = -1;
+const mouseDownPosition = { x: -1, y: -1 };
 
 class List extends Component {
   render() {
     const { id, title, cards, isEditingTitle, isAddingCard } = this.props.list;
     return `
-    <li data-list-id="${id}" class="list-item ${id === draggingId ? 'dragging' : ''}">
+    <li data-list-id="${id}" class="list-item draggable">
       ${
         isEditingTitle
           ? `<textarea autofocus class="list-title-input">${title}</textarea>`
@@ -142,19 +141,25 @@ class List extends Component {
       },
       {
         type: 'mousedown',
-        selector: '.list-item',
+        selector: '.draggable',
         handler: e => {
-          console.log('mousedown', draggingId, e);
-
-          const ghostNode = e.target.closest('.list-item').cloneNode(true);
+          const ghostNode = e.target.closest('.draggable').cloneNode(true);
           ghostNode.classList.add('ghost');
           ghostNode.style.display = 'none';
           document.body.appendChild(ghostNode);
 
-          draggingId = +e.target.closest('.list-item').dataset.listId;
-          mouseDownPosition.x = e.offsetX;
-          mouseDownPosition.y = e.offsetY;
-          console.log(e.target);
+          if (ghostNode.matches('.list-item')) {
+            draggingListId = +e.target.closest('.draggable').dataset.listId;
+            // document.querySelector(`.list-item[data-list-id="${draggingListId}"]`)?.classList.add('dragging');
+          } else if (ghostNode.matches('.card-item')) {
+            draggingCardId = +e.target.closest('.draggable').dataset.cardId;
+            draggingCardListId = +e.target.closest('.list-item').dataset.listId;
+          }
+
+          mouseDownPosition.x =
+            e.offsetX - e.target.closest('.draggable').getBoundingClientRect().x + e.target.getBoundingClientRect().x;
+          mouseDownPosition.y =
+            e.offsetY - e.target.closest('.draggable').getBoundingClientRect().y + e.target.getBoundingClientRect().y;
         },
       },
       {
@@ -162,34 +167,44 @@ class List extends Component {
         selector: 'window',
         handler: e => {
           const ghostNode = document.querySelector('.ghost');
-
           if (!ghostNode) return;
+
           ghostNode.style.display = 'block';
-          // ghostNode.style.transform = `translate(${e.clientX}px, ${e.clientY}px)`;
           ghostNode.style.left = e.clientX - mouseDownPosition.x + 'px';
           ghostNode.style.top = e.clientY - mouseDownPosition.y + 'px';
-          // ghostNode.style.left = e.clientX + 'px';
-          // ghostNode.style.top = e.clientY + 'px';
 
-          if (!e.target.closest('.list-item')) return;
+          if (!e.target.closest('.list-item.draggable')) return;
 
-          // 회고: 성능 개선
-          if (draggingId === +e.target.closest('.list-item').dataset.listId) {
-            console.log('no swap mousemove');
+          // TODO: 성능 개선 -> 다시하기
+          // 리스트 아이템을 이동중이었따ㅣ?
+          if (ghostNode.matches('.list-item')) {
+            console.log(e.target);
+            console.log(draggingListId, +e.target.closest('.list-item.draggable').dataset.listId);
+            if (draggingListId === +e.target.closest('.list-item.draggable').dataset.listId) {
+              // TODO: 왜 여기서?
+              document.querySelector(`.list-item[data-list-id="${draggingListId}"]`)?.classList.add('dragging');
+              return;
+            }
 
-            document.querySelector(`.list-item[data-list-id="${draggingId}"]`)?.classList.add('dragging');
-            return;
+            console.log('list insert');
+            draggingListId = +e.target.closest('.list-item.draggable').dataset.listId;
+            console.log('@@@@@', draggingListId, +ghostNode.dataset.listId);
+            list.insert(+ghostNode.dataset.listId, draggingListId);
           }
-          console.log(
-            'swap mousemove',
-            e.target,
-            draggingId,
-            +e.target.closest('.list-item').dataset.listId,
-            +ghostNode.dataset.listId
-          );
+          // 카드 아이템을 이동중이어따ㅏ??
+          else if (ghostNode.matches('.card-item')) {
+            // console.log(draggingListId, draggingCardId, draggingCardListId, e.target);
 
-          draggingId = +e.target.closest('.list-item').dataset.listId;
-          list.swap(draggingId, +ghostNode.dataset.listId);
+            document
+              .querySelector(
+                `.list-item[data-list-id="${draggingCardListId}"] .card-item[data-card-id="${draggingCardId}"]`
+              )
+              ?.classList.add('dragging');
+
+            console.log('card insert');
+            // draggingCardId = +e.target.closest('.draggable').dataset.cardId;
+            // draggingCardListId = +e.target.closest('.list-item').dataset.listId;
+          }
         },
       },
       // {
@@ -199,9 +214,10 @@ class List extends Component {
       //     // console.log('mouseover');
       //     const ghostNode = document.querySelector('.ghost');
       //     if (!ghostNode) return;
-      //     console.log(draggingId);
-      //     list.swap(e.target.closest('.list-item').dataset.listId, ghostNode.dataset.listId);
-      //     // draggingId = e.target.closest('.list-item').dataset.listId;
+
+      //     console.log(draggingListId);
+      //     list.insert(e.target.closest('.list-item').dataset.listId, ghostNode.dataset.listId);
+      //     // draggingListId = e.target.closest('.list-item').dataset.listId;
       //   },
       // },
       {
@@ -209,20 +225,32 @@ class List extends Component {
         selector: 'window',
         handler: e => {
           const ghostNode = document.querySelector('.ghost');
-
           if (!ghostNode) return;
 
           document.body.removeChild(ghostNode);
-          draggingId = -1;
 
-          if (!e.target.closest('.list-item')) {
-            document.querySelector('.dragging')?.classList.remove('dragging');
-            return;
-          }
+          // if (e.target.closest('.draggable').matches('.list-item')) {
+          //   if (draggingListId === +e.target.closest('.draggable').dataset.listId) {
+          //     document.querySelector(`.draggable[data-list-id="${draggingListId}"]`)?.classList.add('dragging');
+          //     return;
+          //   }
 
-          list.swap(+e.target.closest('.list-item').dataset.listId, +ghostNode.dataset.listId);
+          //   draggingListId = +e.target.closest('.draggable').dataset.listId;
+          //   list.swap(draggingListId, +ghostNode.dataset.listId);
+          // } else if (e.target.closest('.draggable').matches('.card-item')) {
+          //   console.log('card-swap');
+          // }
 
-          // document.querySelector('.dragging')?.classList.remove('dragging');
+          draggingListId = -1;
+          draggingCardId = -1;
+
+          // if (!e.target.closest('.draggable')) {
+          console.log(document.querySelector('.dragging'));
+          document.querySelector('.dragging')?.classList.remove('dragging');
+          // return;
+          // }
+
+          // list.insert(+e.target.closest('.draggable').dataset.listId, +ghostNode.dataset.listId);
         },
       },
       // {
