@@ -5,7 +5,7 @@ let trelloState = {
   lists: [
     {
       id: 1,
-      title: 'Tasks To Do1',
+      title: '1111',
       cards: [
         { id: 1, title: 'React', description: 'learning react!' },
         { id: 2, title: 'TypeScript', description: '' },
@@ -15,7 +15,7 @@ let trelloState = {
     },
     {
       id: 2,
-      title: 'Completed Tasks',
+      title: '222',
       cards: [
         { id: 1, title: 'HTML', description: '' },
         { id: 2, title: 'CSS', description: '' },
@@ -26,7 +26,7 @@ let trelloState = {
     },
     {
       id: 3,
-      title: 'Ongoing Project',
+      title: '3333',
       cards: [
         { id: 1, title: 'VegiTime', description: '' },
         { id: 2, title: 'Trello', description: '' },
@@ -46,6 +46,7 @@ let trelloState = {
 
 const setTrelloState = newState => {
   trelloState = { ...trelloState, ...newState };
+
   render();
 };
 
@@ -79,31 +80,20 @@ const list = {
     const newLists = trelloState.lists.filter(({ id }) => id !== targetListId);
     setTrelloState({ lists: newLists });
   },
-
-  //TODO: 리스트 순서 변경이 아니라 삽입
-  swap(listId1, listId2) {
-    const newLists = [...trelloState.lists];
-    const [idx1, idx2] = [
-      newLists.findIndex(({ id }) => id === +listId1),
-      newLists.findIndex(({ id }) => id === +listId2),
-    ];
-    [newLists[idx1], newLists[idx2]] = [newLists[idx2], newLists[idx1]];
-    setTrelloState({ lists: newLists });
-  },
   insert(moveListId, targetListId) {
+    if (moveListId === targetListId) return;
     const copyLists = [...trelloState.lists];
     const [moveList] = copyLists.filter(({ id }) => id === +moveListId);
     const newLists = copyLists.filter(({ id }) => id !== +moveListId);
-    const targetIdx = newLists.findIndex(({ id }) => id === +targetListId);
-    newLists.splice(targetIdx + 1, 0, moveList);
-    console.log('inser', newLists);
+    const moveIdx = copyLists.findIndex(({ id }) => id === +moveListId);
+    const targetIdx = copyLists.findIndex(({ id }) => id === +targetListId);
+    newLists.splice(moveIdx > targetIdx ? targetIdx : targetIdx + 1, 0, moveList);
     setTrelloState({ lists: newLists });
   },
   changeTitle(targetListId, newTitle) {
     const newLists = trelloState.lists.map(list => (list.id === targetListId ? { ...list, title: newTitle } : list));
     setTrelloState({ lists: newLists });
   },
-
   toggleIsEditingTitle(targetListId) {
     const newLists = trelloState.lists.map(list =>
       list.id === targetListId ? { ...list, isEditingTitle: !list.isEditingTitle } : list
@@ -164,6 +154,40 @@ const card = {
         ? { ...list, cards: newCards1 }
         : list.id === targetListId2
         ? { ...list, cards: newCards2 }
+        : list
+    );
+    setTrelloState({ lists: newLists });
+  },
+
+  insert(moveListId, targetListId, movecardId, targetcardId) {
+    if (moveListId === targetListId) {
+      if (movecardId === targetcardId) return;
+      const copyLists = [...trelloState.lists];
+      const [targetList] = copyLists.filter(({ id }) => id === +targetListId);
+      const copyCards = [...targetList.cards];
+      const [moveCard] = copyCards.filter(({ id }) => id === +movecardId);
+      const newCards = copyCards.filter(({ id }) => id !== +movecardId);
+      const moveIdx = copyCards.findIndex(({ id }) => id === +movecardId);
+      const targetIdx = copyCards.findIndex(({ id }) => id === +targetcardId);
+      newCards.splice(moveIdx > targetIdx ? targetIdx : targetIdx + 1, 0, moveCard);
+      const newLists = copyLists.map(list => (list.id === +targetListId ? { ...list, cards: newCards } : list));
+      setTrelloState({ lists: newLists });
+      return;
+    }
+    const copyLists = [...trelloState.lists];
+    const [targetList] = copyLists.filter(({ id }) => id === +targetListId);
+    const [moveList] = copyLists.filter(({ id }) => id === +moveListId);
+    const copyMoveCards = [...moveList.cards];
+    const [moveCard] = copyMoveCards.filter(({ id }) => id === +movecardId);
+    const newMoveCards = copyMoveCards.filter(({ id }) => id !== +movecardId);
+    const newTargetCards = [...targetList.cards];
+    const targetIdx = newTargetCards.findIndex(({ id }) => id === +targetcardId);
+    newTargetCards.splice(targetIdx, 0, { ...moveCard, id: card.getNewId(targetListId) });
+    const newLists = copyLists.map(list =>
+      list.id === +targetListId
+        ? { ...list, cards: newTargetCards }
+        : list.id === +moveListId
+        ? { ...list, cards: newMoveCards }
         : list
     );
     setTrelloState({ lists: newLists });

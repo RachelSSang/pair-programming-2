@@ -38,22 +38,6 @@ class Card extends Component {
           card.remove(listId, cardId);
         },
       },
-      // {
-      //   type: 'mousedown',
-      //   selector: '.card-item',
-      //   handler: e => {
-      //     const ghostNode = e.target.closest('.card-item').cloneNode(true);
-      //     ghostNode.classList.add('ghost');
-      //     ghostNode.style.display = 'none';
-      //     document.body.appendChild(ghostNode);
-      //     draggingId = +e.target.closest('.card-item').dataset.listId;
-
-      //     // mouseDownPosition.x =
-      //     //   e.offsetX - e.target.closest('.card-item').getBoundingClientRect().x + e.target.getBoundingClientRect().x;
-      //     // mouseDownPosition.y =
-      //     //   e.offsetY - e.target.closest('.card-item').getBoundingClientRect().y + e.target.getBoundingClientRect().y;
-      //   },
-      // },
     ];
   }
 }

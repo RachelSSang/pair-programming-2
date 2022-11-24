@@ -3,10 +3,10 @@ import Card from './Card.js';
 import { trelloState, list, card } from '../trelloState.js';
 import sanitizeHTML from '../utils/sanitizeHTML.js';
 
-let draggingListId = -1;
-let draggingCardId = -1;
-let draggingCardListId = -1;
-const mouseDownPosition = { x: -1, y: -1 };
+let draggingListId = null;
+let draggingCardId = null;
+let draggingCardListId = null;
+const mouseDownPosition = { x: null, y: null };
 
 class List extends Component {
   render() {
@@ -150,13 +150,11 @@ class List extends Component {
 
           if (ghostNode.matches('.list-item')) {
             draggingListId = +e.target.closest('.draggable').dataset.listId;
-            // document.querySelector(`.list-item[data-list-id="${draggingListId}"]`)?.classList.add('dragging');
           } else if (ghostNode.matches('.card-item')) {
             draggingCardId = +e.target.closest('.draggable').dataset.cardId;
             draggingCardListId = +e.target.closest('.list-item').dataset.listId;
           }
 
-          console.log('mousedown', draggingListId, draggingCardListId, draggingCardId);
           mouseDownPosition.x =
             e.offsetX - e.target.closest('.draggable').getBoundingClientRect().x + e.target.getBoundingClientRect().x;
           mouseDownPosition.y =
@@ -167,80 +165,54 @@ class List extends Component {
         type: 'mousemove',
         selector: 'window',
         handler: e => {
-          const ghostNode = document.querySelector('.ghost');
-          if (!ghostNode) return;
+          if (!draggingListId && !draggingCardId) return;
 
+          const ghostNode = document.querySelector('.ghost');
           ghostNode.style.display = 'block';
           ghostNode.style.left = e.clientX - mouseDownPosition.x + 'px';
           ghostNode.style.top = e.clientY - mouseDownPosition.y + 'px';
 
-          const hoveredElements = document.elementsFromPoint(e.clientX, e.clientY);
-          // console.log(hoveredElements);
-          let hoverListItemId = -1;
+          let hoveredListId = null;
+          let hoveredCardId = null;
 
+          const hoveredElements = document.elementsFromPoint(e.clientX, e.clientY);
           hoveredElements.forEach(hoverElement => {
             if (
               hoverElement.matches('.list-item:not(.ghost)') &&
               !hoverElement.matches(`.list-item[data-list-id="${draggingListId}"]`)
             ) {
-              hoverListItemId = +hoverElement.dataset.listId;
-              console.log(hoverListItemId);
+              hoveredListId = +hoverElement.dataset.listId;
+              // console.log('HOVER LIST ID', hoveredListId);
+            }
+            if (
+              draggingCardId &&
+              hoverElement.matches('.card-item:not(.ghost)') &&
+              !hoverElement.matches(
+                `.list-item[data-list-id="${draggingListId}"] .card-item[data-card-id="${draggingCardId}"]`
+              )
+            ) {
+              hoveredCardId = +hoverElement.dataset.cardId;
             }
           });
 
-          document.querySelector(`.list-item[data-list-id="${draggingListId}"]`)?.classList.add('dragging');
+          draggingCardId
+            ? document
+                .querySelector(
+                  `.list-item[data-list-id="${draggingCardListId}"] .card-item[data-card-id="${draggingCardId}"]`
+                )
+                ?.classList.add('dragging')
+            : document.querySelector(`.list-item[data-list-id="${draggingListId}"]`)?.classList.add('dragging');
 
-          if (hoverListItemId !== -1) {
-            // console.log(hoverListItemId);
-
-            draggingListId = +e.target.closest('.list-item.draggable').dataset.listId;
-            list.insert(+ghostNode.dataset.listId, hoverListItemId);
+          if (draggingCardId && hoveredCardId) {
+            card.insert(draggingCardListId, hoveredListId, draggingCardId, hoveredCardId);
+            draggingCardListId = hoveredListId;
+            draggingCardId = hoveredCardId;
           }
-
-          // if (!e.target.closest('.list-item.draggable')) return;
-
-          // // TODO: 성능 개선 -> 다시하기
-          // // 리스트 아이템을 이동중이었따ㅣ?
-          // if (ghostNode.matches('.list-item')) {
-          //   if (draggingListId === +e.target.closest('.list-item.draggable').dataset.listId) {
-          //     // TODO: 왜 여기서?
-          //     document.querySelector(`.list-item[data-list-id="${draggingListId}"]`)?.classList.add('dragging');
-          //     return;
-          //   }
-          //   draggingListId = +e.target.closest('.list-item.draggable').dataset.listId;
-          //   list.insert(+ghostNode.dataset.listId, draggingListId);
-          // }
-          // // 카드 아이템을 이동중이어따ㅏ??
-          // else if (ghostNode.matches('.card-item')) {
-          //   document
-          //     .querySelector(
-          //       `.list-item[data-list-id="${draggingCardListId}"] .card-item[data-card-id="${draggingCardId}"]`
-          //     )
-          //     ?.classList.add('dragging');
-          //   // draggingCardId = +e.target.closest('.draggable').dataset.cardId;
-          //   // draggingCardListId = +e.target.closest('.list-item').dataset.listId;
-          // }
+          if (!draggingCardId && hoveredListId) {
+            list.insert(draggingListId, hoveredListId);
+          }
         },
       },
-      // {
-      //   type: 'mouseover',
-      //   selector: 'window',
-      //   handler: e => {
-      //     console.log(e.target);
-      //     const ghostNode = document.querySelector('.ghost');
-      //     if (!ghostNode) return;
-
-      //     const x = e.clientX;
-      //     const y = e.clientY;
-
-      //     const hoveredElements = document.elementsFromPoint(x, y);
-      //     // hoveredElements.forEach(hoveredElement => console.log(hoveredElement));
-
-      //     // console.log(draggingListId);
-      //     // list.insert(e.target.closest('.list-item').dataset.listId, ghostNode.dataset.listId);
-      //     // // draggingListId = e.target.closest('.list-item').dataset.listId;
-      //   },
-      // },
       {
         type: 'mouseup',
         selector: 'window',
@@ -249,45 +221,11 @@ class List extends Component {
           if (!ghostNode) return;
           document.body.removeChild(ghostNode);
 
-          // if (e.target.closest('.draggable').matches('.list-item')) {
-          //   if (draggingListId === +e.target.closest('.draggable').dataset.listId) {
-          //     document.querySelector(`.draggable[data-list-id="${draggingListId}"]`)?.classList.add('dragging');
-          //     return;
-          //   }
-
-          //   draggingListId = +e.target.closest('.draggable').dataset.listId;
-          //   list.swap(draggingListId, +ghostNode.dataset.listId);
-          // } else if (e.target.closest('.draggable').matches('.card-item')) {
-          //   console.log('card-swap');
-          // }
-
-          draggingListId = -1;
-          draggingCardId = -1;
-
-          // if (!e.target.closest('.draggable')) {
-          console.log(document.querySelector('.dragging'));
+          draggingListId = null;
+          draggingCardId = null;
           document.querySelector('.dragging')?.classList.remove('dragging');
-          // return;
-          // }
-
-          // list.insert(+e.target.closest('.draggable').dataset.listId, +ghostNode.dataset.listId);
         },
       },
-      // {
-      //   type: 'dragend',
-      //   selector: '.list-item',
-      //   handler: e => {
-      //     console.log('dragend');
-
-      //     const ghostNode = document.querySelector('.ghost');
-      //     document.body.removeChild(ghostNode);
-
-      //     // const dropZone = document.querySelector('.drop-zone');
-      //     // document.body.removeChild(dropZone);
-
-      //     e.target.classList.remove('dragging');
-      //   },
-      // },
     ];
   }
 }
