@@ -29,11 +29,12 @@ class Trello extends Component {
     // `;
 
     return `
-      <h1>
-        <box-icon name="trello" type="logo" size="sm" color="#ffffff" flip="vertical"></box-icon>
-        Trello... 근데 이제 바닐라 자바스크립트만 곁들이고 라이브러리는 곁들이지 않고 드래그 앤 드롭은 오직 마우스 이벤트만으로 구현한...
 
-      </h1>
+      <h1 class="title">
+        <box-icon name="trello" type="logo" size="sm" color="#ffffff"></box-icon>
+        Trello 
+      </h1 >
+      <h2 class="subtitle">근데 이제 바닐라 자바스크립트만 곁들이고 라이브러리는 곁들이지 않고 드래그 앤 드롭은 오직 마우스 이벤트만으로 구현한...</h2>
       
       <ul class="list-container">
         ${lists.map(list => new List({ list }).render()).join('')}
