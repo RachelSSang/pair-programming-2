@@ -15,7 +15,6 @@ body {
 }
 
 #root {
-  /* width: fit-content; */
   height: calc(100vh - 3.5rem);
 }
 
@@ -85,7 +84,6 @@ box-icon[name='signal-3'] {
   display: flex;
   flex-direction: column;
   position: relative;
-  /* gap: 0.8rem; */
   min-width: 20rem;
   max-width: 20rem;
   height: fit-content;
@@ -101,7 +99,6 @@ box-icon[name='signal-3'] {
   word-break: break-all;
   font-weight: bold;
   user-select: none;
-  /* pointer-events: none; */
 }
 
 .list-title {
@@ -212,7 +209,6 @@ box-icon[name='signal-3'] {
 .card-container {
   display: flex;
   flex-direction: column;
-  /* gap: 0.8rem; */
   overflow: hidden;
 }
 
@@ -234,48 +230,12 @@ box-icon[name='signal-3'] {
   user-select: none;
 }
 
-/* .add-card-form {
-  display: flex;
-  flex-direction: column;
-  gap: 0.8rem;
-}
-
-.add-card-form input {
-  padding: 0.8rem;
-  width: 100%;
-  height: 2rem;
-  border: none;
-}
-
-.button-container {
-  display: flex;
-  gap: 0.4rem;
-  align-items: flex-end;
-}
-
-.add-card-form .submit-btn {
-  width: 5rem;
-  height: 2rem;
-  background-color: #3b63b2;
-  color: white;
-  border-radius: 0.2rem;
-} */
-
-/* .add-card-btn {
-  padding: 0.5rem;
-  color: #49546d;
-} */
-
 .add-card-btn {
   user-select: none;
 }
 
 .remove-card-btn {
   display: none;
-}
-
-.card-item:not(.ghost):hover {
-  background-color: rgba(255, 255, 255, 0.7);
 }
 
 .card-item:not(.ghost):hover .remove-card-btn {
