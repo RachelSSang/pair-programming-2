@@ -1,6 +1,6 @@
 import Component from '../library/core/Component.js';
 import Card from './Card.js';
-import { trelloState, list, card } from '../trelloState.js';
+import { getTrelloState, list, card } from '../trelloState.js';
 import sanitizeHTML from '../utils/sanitizeHTML.js';
 
 let draggingListId = null;
@@ -25,7 +25,7 @@ class List extends Component {
           <button class="save-add-card-btn">Add card</button>
           <button class="cancle-add-card-btn"><box-icon name="x"></box-icon></button>
         </li>
-        <li><button class="add-card-btn" ${isAddingCard ? 'hidden' : ''} >+ Add a card</button></li> 
+        <li><button class="add-card-btn ${isAddingCard ? 'hidden' : ''}" >+ Add a card</button></li> 
       </ul>
       <button class="remove-list-btn"><box-icon name='x'></box-icon></button>
     </li>`;
@@ -44,7 +44,7 @@ class List extends Component {
         handler: e => {
           const parentNode = e.target.closest('.list-item');
           const targetId = +parentNode.dataset.listId;
-          list.toggleIsEditingTitle(targetId);
+          list.activeIsEditingTitle(targetId);
           const listTitleInput = parentNode.querySelector('.list-title-input');
           listTitleInput.style.height = listTitleInput.scrollHeight + 'px';
           listTitleInput.select();
@@ -55,7 +55,9 @@ class List extends Component {
         selector: '.add-card-btn',
         handler: e => {
           const targetId = +e.target.closest('.list-item').dataset.listId;
-          trelloState.lists.filter(({ id }) => id !== targetId).forEach(({ id }) => list.inactiveAddingCard(id));
+          getTrelloState()
+            .lists.filter(({ id }) => id !== targetId)
+            .forEach(({ id }) => list.inactiveAddingCard(id));
           list.activeAddingCard(targetId);
           e.target.closest('.card-container').querySelector('.add-card-input').focus();
         },
@@ -112,7 +114,7 @@ class List extends Component {
           const newTitle =
             e.target.value.trim() === '' || e.target.value === beforeTitle ? beforeTitle : e.target.value;
           list.changeTitle(targetId, sanitizeHTML(newTitle));
-          list.toggleIsEditingTitle(targetId);
+          list.inactiveIsEditingTitle(targetId);
         },
       },
       {
@@ -169,8 +171,8 @@ class List extends Component {
 
           const ghostNode = document.querySelector('.ghost');
           ghostNode.style.display = 'block';
-          ghostNode.style.left = e.clientX - mouseDownPosition.x + 'px';
-          ghostNode.style.top = e.clientY - mouseDownPosition.y + 'px';
+          ghostNode.style.left = e.pageX - mouseDownPosition.x + 'px';
+          ghostNode.style.top = e.pageY - mouseDownPosition.y + 'px';
 
           let hoveredListId = null;
           let hoveredCardId = null;
@@ -182,13 +184,12 @@ class List extends Component {
               !hoverElement.matches(`.list-item[data-list-id="${draggingListId}"]`)
             ) {
               hoveredListId = +hoverElement.dataset.listId;
-              // console.log('HOVER LIST ID', hoveredListId);
             }
             if (
               draggingCardId &&
               hoverElement.matches('.card-item:not(.ghost)') &&
               !hoverElement.matches(
-                `.list-item[data-list-id="${draggingListId}"] .card-item[data-card-id="${draggingCardId}"]`
+                `.list-item[data-list-id="${draggingCardListId}"] .card-item[data-card-id="${draggingCardId}"]`
               )
             ) {
               hoveredCardId = +hoverElement.dataset.cardId;
@@ -200,13 +201,17 @@ class List extends Component {
                 .querySelector(
                   `.list-item[data-list-id="${draggingCardListId}"] .card-item[data-card-id="${draggingCardId}"]`
                 )
-                ?.classList.add('dragging')
-            : document.querySelector(`.list-item[data-list-id="${draggingListId}"]`)?.classList.add('dragging');
+                .classList.add('dragging')
+            : document.querySelector(`.list-item[data-list-id="${draggingListId}"]`).classList.add('dragging');
 
           if (draggingCardId && hoveredCardId) {
-            card.insert(draggingCardListId, hoveredListId, draggingCardId, hoveredCardId);
+            draggingCardId = card.insert(draggingCardListId, hoveredListId, draggingCardId, hoveredCardId);
             draggingCardListId = hoveredListId;
-            draggingCardId = hoveredCardId;
+          }
+
+          if (draggingCardId && !hoveredCardId && hoveredListId && list.getListById(hoveredListId).cards.length === 0) {
+            draggingCardId = card.insert(draggingCardListId, hoveredListId, draggingCardId, 0);
+            draggingCardListId = hoveredListId;
           }
           if (!draggingCardId && hoveredListId) {
             list.insert(draggingListId, hoveredListId);
@@ -216,9 +221,9 @@ class List extends Component {
       {
         type: 'mouseup',
         selector: 'window',
-        handler: e => {
+        handler: () => {
+          if (!draggingListId && !draggingCardId) return;
           const ghostNode = document.querySelector('.ghost');
-          if (!ghostNode) return;
           document.body.removeChild(ghostNode);
 
           draggingListId = null;

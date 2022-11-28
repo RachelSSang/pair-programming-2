@@ -1,12 +1,12 @@
 import Component from '../library/core/Component.js';
 import List from './ListNew.js';
 import Modal from './Modal.js';
-import { trelloState, trello, list } from '../trelloState.js';
+import { getTrelloState, trello, list } from '../trelloState.js';
 import sanitizeHTML from '../utils/sanitizeHTML.js';
 
 class Trello extends Component {
   render() {
-    const { lists, modal, isAddingList } = trelloState;
+    const { lists, modal, isAddingList } = getTrelloState();
     // 조건부 렌더링 방식 -> 특정 이벤트 처리가 어려움(여러 이벤트가 등록되는 경우 이미 dom에서 사라진 경우가 존재)
     // return `
     //   <h1>
@@ -29,7 +29,6 @@ class Trello extends Component {
     // `;
 
     return `
-
       <h1 class="title">
         <box-icon name="trello" type="logo" size="sm" color="#ffffff"></box-icon>
         Trello 
@@ -104,7 +103,7 @@ class Trello extends Component {
         type: 'click',
         selector: 'window',
         handler: e => {
-          if (trelloState.isAddingList) {
+          if (getTrelloState().isAddingList) {
             if (
               !e.target.matches('.add-list-btn') &&
               !e.target.closest('.add-list-wrapper') &&
@@ -116,8 +115,8 @@ class Trello extends Component {
               e.target.querySelector('.add-list-input').focus();
             }
           }
-          if (trelloState.lists.filter(({ isAddingCard }) => isAddingCard).length) {
-            const targetId = trelloState.lists.filter(list => list.isAddingCard)[0]?.id;
+          if (getTrelloState().lists.filter(({ isAddingCard }) => isAddingCard).length) {
+            const targetId = getTrelloState().lists.filter(list => list.isAddingCard)[0]?.id;
             if (
               (!e.target.matches('.save-add-card-btn') &&
                 !e.target.closest(`.list-item[data-list-id="${targetId}"]`)) ||

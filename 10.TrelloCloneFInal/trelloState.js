@@ -1,54 +1,18 @@
 import render from './library/dom/render.js';
 
 // eslint-disable-next-line import/no-mutable-exports
-let trelloState = {
-  lists: [
-    {
-      id: 1,
-      title: '1111',
-      cards: [
-        { id: 1, title: 'React', description: 'learning react!' },
-        { id: 2, title: 'TypeScript', description: '' },
-      ],
-      isEditingTitle: false,
-      isAddingCard: false,
-    },
-    {
-      id: 2,
-      title: '222',
-      cards: [
-        { id: 1, title: 'HTML', description: '' },
-        { id: 2, title: 'CSS', description: '' },
-        { id: 3, title: 'JavaScript', description: '' },
-      ],
-      isEditingTitle: false,
-      isAddingCard: false,
-    },
-    {
-      id: 3,
-      title: '3333',
-      cards: [
-        { id: 1, title: 'VegiTime', description: '' },
-        { id: 2, title: 'Trello', description: '' },
-        { id: 3, title: 'Vinyl arrange', description: '' },
-      ],
-      isEditingTitle: false,
-      isAddingCard: false,
-    },
-  ],
-  modal: {
-    isOpened: false,
-    isEditingTitle: false,
-    isEditingDescription: false,
-  },
-  isAddingList: false,
-};
+let trelloState = {};
 
 const setTrelloState = newState => {
   trelloState = { ...trelloState, ...newState };
-
   render();
 };
+
+const setInitialState = initialState => {
+  trelloState = initialState;
+};
+
+const getTrelloState = () => trelloState;
 
 const trello = {
   activeAddingList() {
@@ -94,9 +58,15 @@ const list = {
     const newLists = trelloState.lists.map(list => (list.id === targetListId ? { ...list, title: newTitle } : list));
     setTrelloState({ lists: newLists });
   },
-  toggleIsEditingTitle(targetListId) {
+  activeIsEditingTitle(targetListId) {
     const newLists = trelloState.lists.map(list =>
-      list.id === targetListId ? { ...list, isEditingTitle: !list.isEditingTitle } : list
+      list.id === targetListId ? { ...list, isEditingTitle: true } : list
+    );
+    setTrelloState({ lists: newLists });
+  },
+  inactiveIsEditingTitle(targetListId) {
+    const newLists = trelloState.lists.map(list =>
+      list.id === targetListId ? { ...list, isEditingTitle: false } : list
     );
     setTrelloState({ lists: newLists });
   },
@@ -167,12 +137,11 @@ const card = {
       const copyCards = [...targetList.cards];
       const [moveCard] = copyCards.filter(({ id }) => id === +movecardId);
       const newCards = copyCards.filter(({ id }) => id !== +movecardId);
-      const moveIdx = copyCards.findIndex(({ id }) => id === +movecardId);
       const targetIdx = copyCards.findIndex(({ id }) => id === +targetcardId);
-      newCards.splice(moveIdx > targetIdx ? targetIdx : targetIdx + 1, 0, moveCard);
+      newCards.splice(targetIdx, 0, moveCard);
       const newLists = copyLists.map(list => (list.id === +targetListId ? { ...list, cards: newCards } : list));
       setTrelloState({ lists: newLists });
-      return;
+      return movecardId;
     }
     const copyLists = [...trelloState.lists];
     const [targetList] = copyLists.filter(({ id }) => id === +targetListId);
@@ -182,7 +151,8 @@ const card = {
     const newMoveCards = copyMoveCards.filter(({ id }) => id !== +movecardId);
     const newTargetCards = [...targetList.cards];
     const targetIdx = newTargetCards.findIndex(({ id }) => id === +targetcardId);
-    newTargetCards.splice(targetIdx, 0, { ...moveCard, id: card.getNewId(targetListId) });
+    const newId = card.getNewId(targetListId);
+    newTargetCards.splice(targetIdx, 0, { ...moveCard, id: newId });
     const newLists = copyLists.map(list =>
       list.id === +targetListId
         ? { ...list, cards: newTargetCards }
@@ -191,6 +161,7 @@ const card = {
         : list
     );
     setTrelloState({ lists: newLists });
+    return newId;
   },
 
   changeTitle(targetListId, targetCardId, newTitle) {
@@ -217,10 +188,13 @@ const card = {
 };
 
 const modal = {
-  toggle() {
+  active(listId, cardId) {
     const { modal } = trelloState;
-    const { isOpened } = modal;
-    setTrelloState({ modal: { ...modal, isOpened: !isOpened } });
+    setTrelloState({ modal: { ...modal, listId, cardId, isOpened: true } });
+  },
+  inactive() {
+    const { modal } = trelloState;
+    setTrelloState({ modal: { ...modal, isOpened: false, isEditingTitle: false, isEditingDescription: false } });
   },
 
   activeIsEditingTitle() {
@@ -232,12 +206,6 @@ const modal = {
     setTrelloState({ modal: { ...modal, isEditingTitle: false } });
   },
 
-  toggleIsEditingTitle() {
-    const { modal } = trelloState;
-    const { isEditingTitle } = modal;
-    setTrelloState({ modal: { ...modal, isEditingTitle: !isEditingTitle } });
-  },
-
   activeIsEditingDescription() {
     const { modal } = trelloState;
     setTrelloState({ modal: { ...modal, isEditingDescription: true } });
@@ -246,12 +214,6 @@ const modal = {
     const { modal } = trelloState;
     setTrelloState({ modal: { ...modal, isEditingDescription: false } });
   },
-
-  toggleIsEditingDescription() {
-    const { modal } = trelloState;
-    const { isEditingDescription } = modal;
-    setTrelloState({ modal: { ...modal, isEditingDescription: !isEditingDescription } });
-  },
 };
 
-export { trelloState, setTrelloState, trello, list, card, modal };
+export { trelloState, setInitialState, setTrelloState, getTrelloState, trello, list, card, modal };
