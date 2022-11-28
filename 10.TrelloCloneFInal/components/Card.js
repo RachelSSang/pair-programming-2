@@ -24,9 +24,7 @@ class Card extends Component {
           if (e.target.closest('.remove-card-btn')) return;
           const cardId = +e.target.closest('.card-item').dataset.cardId;
           const listId = +e.target.closest('.list-item').dataset.listId;
-          const cardClick = new CustomEvent('cardClick', { detail: { cardId, listId } });
-          document.getElementById('root').dispatchEvent(cardClick);
-          modal.toggle();
+          modal.active(listId, cardId);
         },
       },
       {
