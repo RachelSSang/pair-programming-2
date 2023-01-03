@@ -1,4 +1,4 @@
-import Component from '../library/core/Component.js';
+import Component from '../library/Component.js';
 import Card from './Card.js';
 import { getTrelloState, list, card } from '../trelloState.js';
 import sanitizeHTML from '../utils/sanitizeHTML.js';
@@ -7,6 +7,7 @@ let draggingListId = null;
 let draggingCardId = null;
 let draggingCardListId = null;
 const mouseDownPosition = { x: null, y: null };
+const mouseDownClientPosition = { x: null, y: null };
 
 class List extends Component {
   render() {
@@ -19,13 +20,13 @@ class List extends Component {
           : `<h2 class="list-title">${title}</h2>`
       }
       <ul class="card-container">
-        ${cards.map(card => new Card({ card }).render()).join('')}
-        <li class="add-card-wrapper ${isAddingCard ? '' : 'hidden'}">
-          <textarea placeholder="Enter a title for this card..." autofocus class="add-card-input"></textarea>
-          <button class="save-add-card-btn">Add card</button>
-          <button class="cancle-add-card-btn"><box-icon name="x"></box-icon></button>
-        </li>
-        <li><button class="add-card-btn ${isAddingCard ? 'hidden' : ''}" >+ Add a card</button></li> 
+      ${cards.map(card => new Card({ card }).render()).join('')}
+      <li class="add-card-wrapper ${isAddingCard ? '' : 'hidden'}">
+      <textarea placeholder="Enter a title for this card..." autofocus class="add-card-input"></textarea>
+      <button class="save-add-card-btn">Add card</button>
+      <button class="cancle-add-card-btn"><box-icon name="x"></box-icon></button>
+      </li>
+      <li><button class="add-card-btn ${isAddingCard ? 'hidden' : ''}" >+ Add a card</button></li> 
       </ul>
       <button class="remove-list-btn"><box-icon name='x'></box-icon></button>
     </li>`;
@@ -161,6 +162,8 @@ class List extends Component {
             e.offsetX - e.target.closest('.draggable').getBoundingClientRect().x + e.target.getBoundingClientRect().x;
           mouseDownPosition.y =
             e.offsetY - e.target.closest('.draggable').getBoundingClientRect().y + e.target.getBoundingClientRect().y;
+          mouseDownClientPosition.x = e.clientX;
+          mouseDownClientPosition.y = e.clientY;
         },
       },
       {
@@ -168,6 +171,9 @@ class List extends Component {
         selector: 'window',
         handler: e => {
           if (!draggingListId && !draggingCardId) return;
+
+          if (Math.abs(mouseDownClientPosition.x - e.clientX) + Math.abs(mouseDownClientPosition.y - e.clientY) < 3)
+            return;
 
           const ghostNode = document.querySelector('.ghost');
           ghostNode.style.display = 'block';
