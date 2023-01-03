@@ -1,4 +1,4 @@
-import Component from './library/core/Component.js';
+import Component from './library/Component.js';
 import Trello from './components/Trello.js';
 import { setInitialState, getTrelloState } from './trelloState.js';
 

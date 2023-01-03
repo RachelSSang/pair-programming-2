@@ -1,4 +1,4 @@
-import render from './library/dom/render.js';
+import render from './library/render.js';
 
 // eslint-disable-next-line import/no-mutable-exports
 let trelloState = {};

@@ -1,4 +1,4 @@
-import Component from '../library/core/Component.js';
+import Component from '../library/Component.js';
 import List from './ListNew.js';
 import Modal from './Modal.js';
 import { getTrelloState, trello, list } from '../trelloState.js';
@@ -74,6 +74,7 @@ class Trello extends Component {
         type: 'click',
         selector: '.save-add-list-btn',
         handler: e => {
+          console.log(e.target);
           this.addList(e.target.parentNode.querySelector('.add-list-input').value);
         },
       },

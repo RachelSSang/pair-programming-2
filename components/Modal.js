@@ -1,4 +1,4 @@
-import Component from '../library/core/Component.js';
+import Component from '../library/Component.js';
 import { getTrelloState, list, card, modal } from '../trelloState.js';
 import sanitizeHTML from '../utils/sanitizeHTML.js';
 
@@ -170,6 +170,7 @@ class Modal extends Component {
         type: 'click',
         selector: '.close-modal-btn',
         handler: e => {
+          console.log('!!');
           if (!getTrelloState().modal.isEditingDescription) {
             modal.inactive();
             return;
