@@ -1,4 +1,4 @@
-import Component from './library/core/Component.js';
+import Component from './library/Component.js';
 import Trello from './components/Trello.js';
 import { setInitialState, getTrelloState } from './trelloState.js';
 
@@ -23,7 +23,7 @@ class App extends Component {
     return `${new Trello().render()}`;
   }
 
-  addEventListener() {
+  addEvents() {
     return [
       {
         type: 'beforeunload',

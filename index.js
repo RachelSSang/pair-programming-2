@@ -1,4 +1,4 @@
-import render from './library/dom/render.js';
+import render from './library/render.js';
 import App from './App.js';
 
 // initial rendering

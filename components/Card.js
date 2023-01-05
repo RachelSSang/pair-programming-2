@@ -1,4 +1,4 @@
-import Component from '../library/core/Component.js';
+import Component from '../library/Component.js';
 import { card, modal } from '../trelloState.js';
 
 class Card extends Component {
@@ -15,7 +15,7 @@ class Card extends Component {
     `;
   }
 
-  addEventListener() {
+  addEvents() {
     return [
       {
         type: 'click',

@@ -1,4 +1,4 @@
-import Component from '../library/core/Component.js';
+import Component from '../library/Component.js';
 import List from './ListNew.js';
 import Modal from './Modal.js';
 import { getTrelloState, trello, list } from '../trelloState.js';
@@ -55,7 +55,7 @@ class Trello extends Component {
     document.querySelector('.add-list-input').focus();
   }
 
-  addEventListener() {
+  addEvents() {
     return [
       {
         type: 'click',

@@ -1,4 +1,4 @@
-import Component from '../library/core/Component.js';
+import Component from '../library/Component.js';
 import { getTrelloState, list, card, modal } from '../trelloState.js';
 import sanitizeHTML from '../utils/sanitizeHTML.js';
 
@@ -70,7 +70,7 @@ class Modal extends Component {
     // </div>`;
   }
 
-  addEventListener() {
+  addEvents() {
     return [
       {
         type: 'click',

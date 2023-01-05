@@ -1,4 +1,4 @@
-import Component from '../library/core/Component.js';
+import Component from '../library/Component.js';
 import Card from './Card.js';
 import { getTrelloState, list, card } from '../trelloState.js';
 import sanitizeHTML from '../utils/sanitizeHTML.js';
@@ -36,7 +36,7 @@ class List extends Component {
     document.querySelector(`.list-item[data-list-id="${targetListId}"] .add-card-input`).focus();
   }
 
-  addEventListener() {
+  addEvents() {
     return [
       {
         type: 'click',
