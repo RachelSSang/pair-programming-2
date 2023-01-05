@@ -12,23 +12,23 @@ class List extends Component {
   render() {
     const { id, title, cards, isEditingTitle, isAddingCard } = this.props.list;
     return `
-    <li data-list-id="${id}" class="list-item draggable">
-      <div>
+    <li data-list-id="${id}" class="list-item draggable-container">
+      <div class="inner-list-item draggable">
         ${
           isEditingTitle
             ? `<textarea autofocus class="list-title-input">${title}</textarea>`
             : `<h2 class="list-title">${title}</h2>`
         }
-      <ul class="card-container">
-        ${cards.map(card => new Card({ card }).render()).join('')}
-        <li class="add-card-wrapper ${isAddingCard ? '' : 'hidden'}">
-          <textarea placeholder="Enter a title for this card..." autofocus class="add-card-input"></textarea>
-          <button class="save-add-card-btn">Add card</button>
-          <button class="cancle-add-card-btn"><box-icon name="x"></box-icon></button>
-        </li>
-        <li><button class="add-card-btn ${isAddingCard ? 'hidden' : ''}" >+ Add a card</button></li> 
-      </ul>
-      <button class="remove-list-btn"><box-icon name='x'></box-icon></button>
+        <ul class="card-container">
+          ${cards.map(card => new Card({ card }).render()).join('')}
+          <li class="add-card-wrapper ${isAddingCard ? '' : 'hidden'}">
+            <textarea placeholder="Enter a title for this card..." autofocus class="add-card-input"></textarea>
+            <button class="save-add-card-btn">Add card</button>
+            <button class="cancle-add-card-btn"><box-icon name="x"></box-icon></button>
+          </li>
+          <li><button class="add-card-btn ${isAddingCard ? 'hidden' : ''}" >+ Add a card</button></li> 
+        </ul>
+        <button class="remove-list-btn"><box-icon name='x'></box-icon></button>
       </div>
     </li>`;
   }
@@ -151,9 +151,8 @@ class List extends Component {
           ghostNode.classList.add('ghost');
           ghostNode.style.display = 'none';
           document.body.appendChild(ghostNode);
-
-          if (ghostNode.matches('.list-item')) {
-            draggingListId = +e.target.closest('.draggable').dataset.listId;
+          if (ghostNode.matches('.inner-list-item')) {
+            draggingListId = +e.target.closest('.draggable-container').dataset.listId;
           } else if (ghostNode.matches('.card-item')) {
             draggingCardId = +e.target.closest('.draggable').dataset.cardId;
             draggingCardListId = +e.target.closest('.list-item').dataset.listId;

@@ -14,10 +14,6 @@ body {
   background-color: #0b64b2;
 }
 
-#root {
-  height: calc(100vh - 3.5rem);
-}
-
 .hidden {
   display: none;
 }
@@ -40,12 +36,14 @@ h1 > box-icon {
 }
 
 .subtitle {
-  display: flex;
-  align-items: center;
+  height: 2.5rem;
   padding: 0 0 1rem 2rem;
   font-size: 1.3rem;
   color: #ffffff;
   background-color: #0d508e;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 ul {
@@ -74,13 +72,19 @@ box-icon[name='signal-3'] {
 }
 
 .list-container {
+  min-height: calc(100vh - 6rem);
+  height: fit-content;
   display: flex;
   flex-direction: row;
   padding: 1.5rem;
   gap: 1.5rem;
 }
 
-.list-item > div {
+.list-item {
+  border-radius: 0.2rem;
+}
+
+.inner-list-item {
   display: flex;
   flex-direction: column;
   position: relative;
