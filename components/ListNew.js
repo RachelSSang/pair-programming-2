@@ -6,6 +6,7 @@ import sanitizeHTML from '../utils/sanitizeHTML.js';
 let draggingListId = null;
 let draggingCardId = null;
 let draggingCardListId = null;
+const relativeMouseDownPosition = { x: null, y: null };
 const mouseDownPosition = { x: null, y: null };
 
 class List extends Component {
@@ -158,10 +159,12 @@ class List extends Component {
             draggingCardListId = +e.target.closest('.list-item').dataset.listId;
           }
 
-          mouseDownPosition.x =
+          relativeMouseDownPosition.x =
             e.offsetX - e.target.closest('.draggable').getBoundingClientRect().x + e.target.getBoundingClientRect().x;
-          mouseDownPosition.y =
+          relativeMouseDownPosition.y =
             e.offsetY - e.target.closest('.draggable').getBoundingClientRect().y + e.target.getBoundingClientRect().y;
+          mouseDownPosition.x = e.pageX;
+          mouseDownPosition.y = e.pageY;
         },
       },
       {
@@ -170,10 +173,12 @@ class List extends Component {
         handler: e => {
           if (!draggingListId && !draggingCardId) return;
 
+          if (Math.abs(mouseDownPosition.x - e.pageX) + Math.abs(mouseDownPosition.y - e.pageY) < 3) return;
+
           const ghostNode = document.querySelector('.ghost');
           ghostNode.style.display = 'block';
-          ghostNode.style.left = e.pageX - mouseDownPosition.x + 'px';
-          ghostNode.style.top = e.pageY - mouseDownPosition.y + 'px';
+          ghostNode.style.left = e.pageX - relativeMouseDownPosition.x + 'px';
+          ghostNode.style.top = e.pageY - relativeMouseDownPosition.y + 'px';
 
           let hoveredListId = null;
           let hoveredCardId = null;
