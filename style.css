@@ -80,7 +80,7 @@ box-icon[name='signal-3'] {
   gap: 1.5rem;
 }
 
-.list-item {
+.list-item > div {
   display: flex;
   flex-direction: column;
   position: relative;
@@ -324,6 +324,7 @@ box-icon[name='signal-3'] {
 .dragging {
   background-color: rgba(0, 0, 0, 0.1);
   box-shadow: none;
+  height: fit-content;
 }
 
 .dragging * {

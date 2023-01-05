@@ -13,11 +13,12 @@ class List extends Component {
     const { id, title, cards, isEditingTitle, isAddingCard } = this.props.list;
     return `
     <li data-list-id="${id}" class="list-item draggable">
-      ${
-        isEditingTitle
-          ? `<textarea autofocus class="list-title-input">${title}</textarea>`
-          : `<h2 class="list-title">${title}</h2>`
-      }
+      <div>
+        ${
+          isEditingTitle
+            ? `<textarea autofocus class="list-title-input">${title}</textarea>`
+            : `<h2 class="list-title">${title}</h2>`
+        }
       <ul class="card-container">
         ${cards.map(card => new Card({ card }).render()).join('')}
         <li class="add-card-wrapper ${isAddingCard ? '' : 'hidden'}">
@@ -28,6 +29,7 @@ class List extends Component {
         <li><button class="add-card-btn ${isAddingCard ? 'hidden' : ''}" >+ Add a card</button></li> 
       </ul>
       <button class="remove-list-btn"><box-icon name='x'></box-icon></button>
+      </div>
     </li>`;
   }
 
