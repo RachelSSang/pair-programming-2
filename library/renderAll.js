@@ -5,7 +5,7 @@ let component = null;
 let $container = null;
 let $virtualRoot = null;
 
-const render = (RootComponent, $rootContainer) => {
+const renderAll = (RootComponent, $rootContainer) => {
   if (RootComponent) component = new RootComponent();
   if ($rootContainer) {
     $container = $rootContainer;
@@ -20,4 +20,4 @@ const render = (RootComponent, $rootContainer) => {
   });
 };
 
-export default render;
+export default renderAll;

@@ -1,4 +1,4 @@
-import render from './render.js';
+import renderAll from './renderAll.js';
 import events from './events.js';
 
 class Component {
@@ -23,7 +23,7 @@ class Component {
 
   setState(newState) {
     this.state = { ...this.state, ...newState };
-    render();
+    renderAll();
   }
 }
 
