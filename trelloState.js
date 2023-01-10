@@ -1,11 +1,11 @@
-import render from './library/renderAll.js';
+import renderAll from './library/renderAll.js';
 
 // eslint-disable-next-line import/no-mutable-exports
 let trelloState = {};
 
 const setTrelloState = newState => {
   trelloState = { ...trelloState, ...newState };
-  render();
+  renderAll();
 };
 
 const setInitialState = initialState => {
