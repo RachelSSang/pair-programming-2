@@ -1,6 +1,6 @@
 import Component from './library/Component.js';
 import Trello from './components/Trello.js';
-import { setInitialState, getTrelloState } from './trelloState.js';
+import { setInitialGlobalState, getGlobalState } from './library/globalState.js';
 
 class App extends Component {
   constructor(props) {
@@ -10,9 +10,9 @@ class App extends Component {
 
   init() {
     const localState = JSON.parse(localStorage.getItem('trelloState'));
-    if (localState) setInitialState(localState);
+    if (localState) setInitialGlobalState(localState);
     else
-      setInitialState({
+      setInitialGlobalState({
         lists: [],
         modal: { listId: null, cardId: null, isOpened: false, isEditingTitle: false, isEditingDescription: false },
         isAddingList: false,
@@ -30,10 +30,10 @@ class App extends Component {
         selector: 'window',
         handler: () => {
           const newList = [
-            ...getTrelloState().lists.map(list => (list.isEditingTitle ? { ...list, isEditingTitle: false } : list)),
+            ...getGlobalState().lists.map(list => (list.isEditingTitle ? { ...list, isEditingTitle: false } : list)),
           ];
           const newTrelloState = {
-            ...getTrelloState(),
+            ...getGlobalState(),
             list: newList,
             modal: { listId: null, cardId: null, isOpened: false, isEditingTitle: false, isEditingDescription: false },
           };

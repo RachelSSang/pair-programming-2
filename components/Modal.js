@@ -1,10 +1,11 @@
 import Component from '../library/Component.js';
-import { getTrelloState, list, card, modal } from '../trelloState.js';
+import { getGlobalState } from '../library/globalState.js';
+import { list, card, modal } from '../trelloState.js';
 import sanitizeHTML from '../utils/sanitizeHTML.js';
 
 class Modal extends Component {
   render() {
-    const { listId, cardId, isEditingTitle, isEditingDescription } = getTrelloState().modal;
+    const { listId, cardId, isEditingTitle, isEditingDescription } = getGlobalState().modal;
     const targetList = list.getListById(listId);
     const targetCard = card.getCardById(listId, cardId);
     return `
@@ -76,7 +77,7 @@ class Modal extends Component {
         type: 'click',
         selector: '.modal-title',
         handler: e => {
-          if (getTrelloState().modal.isEditingDescription) {
+          if (getGlobalState().modal.isEditingDescription) {
             e.target.closest('.modal').querySelector('.modal-description-input').focus();
             return;
           }
@@ -92,7 +93,7 @@ class Modal extends Component {
         type: 'focusout',
         selector: '.modal-title-input',
         handler: e => {
-          const { listId, cardId } = getTrelloState().modal;
+          const { listId, cardId } = getGlobalState().modal;
           const beforeTitle = card.getCardById(listId, cardId).title;
           const newTitle = e.target.value.trim() === '' ? beforeTitle : e.target.value;
           card.changeTitle(listId, cardId, sanitizeHTML(newTitle));
@@ -139,7 +140,7 @@ class Modal extends Component {
         type: 'click',
         selector: '.save-modal-description-btn',
         handler: e => {
-          const { listId, cardId } = getTrelloState().modal;
+          const { listId, cardId } = getGlobalState().modal;
           const newDescription = e.target
             .closest('.modal-description-wrapper')
             .querySelector('.modal-description-input').value;
@@ -170,7 +171,7 @@ class Modal extends Component {
         type: 'click',
         selector: '.close-modal-btn',
         handler: e => {
-          if (!getTrelloState().modal.isEditingDescription) {
+          if (!getGlobalState().modal.isEditingDescription) {
             modal.inactive();
             return;
           }
@@ -182,11 +183,11 @@ class Modal extends Component {
         selector: '.modal-wrapper',
         handler: e => {
           if (e.target.matches('.modal-wrapper')) {
-            if (getTrelloState().modal.isEditingDescription) e.target.querySelector('.modal-description-input').focus();
+            if (getGlobalState().modal.isEditingDescription) e.target.querySelector('.modal-description-input').focus();
             else modal.inactive();
             return;
           }
-          if (!getTrelloState().modal.isEditingDescription) return;
+          if (!getGlobalState().modal.isEditingDescription) return;
           e.target.closest('.modal').querySelector('.modal-description-input').focus();
         },
       },
@@ -197,11 +198,11 @@ class Modal extends Component {
         handler: e => {
           if (e.key !== 'Escape') return;
           if (e.target.matches('.modal-wrapper')) {
-            if (getTrelloState().modal.isEditingDescription) e.target.querySelector('.modal-description-input').focus();
+            if (getGlobalState().modal.isEditingDescription) e.target.querySelector('.modal-description-input').focus();
             else modal.inactive();
             return;
           }
-          if (!getTrelloState().modal.isEditingDescription) return;
+          if (!getGlobalState().modal.isEditingDescription) return;
           e.target.closest('.modal').querySelector('.modal-description-input').focus();
         },
       },

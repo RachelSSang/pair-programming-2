@@ -1,4 +1,3 @@
-import renderAll from './renderAll.js';
 import events from './events.js';
 
 class Component {
@@ -19,11 +18,6 @@ class Component {
         events.push(event);
       }
     });
-  }
-
-  setState(newState) {
-    this.state = { ...this.state, ...newState };
-    renderAll();
   }
 }
 

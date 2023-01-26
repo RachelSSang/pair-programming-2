@@ -1,6 +1,7 @@
 import Component from '../library/Component.js';
 import Card from './Card.js';
-import { getTrelloState, list, card } from '../trelloState.js';
+import { getGlobalState } from '../library/globalState.js';
+import { list, card } from '../trelloState.js';
 import sanitizeHTML from '../utils/sanitizeHTML.js';
 
 let draggingListId = null;
@@ -58,7 +59,7 @@ class List extends Component {
         selector: '.add-card-btn',
         handler: e => {
           const targetId = +e.target.closest('.list-item').dataset.listId;
-          getTrelloState()
+          getGlobalState()
             .lists.filter(({ id }) => id !== targetId)
             .forEach(({ id }) => list.inactiveAddingCard(id));
           list.activeAddingCard(targetId);
