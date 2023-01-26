@@ -1,7 +1,10 @@
 import renderAll from './renderAll.js';
 
-// eslint-disable-next-line import/no-mutable-exports
 let globalState = {};
+
+const setInitialGlobalState = initialState => {
+  globalState = initialState;
+};
 
 const getGlobalState = () => globalState;
 
@@ -10,8 +13,4 @@ const setGlobalState = nextState => {
   renderAll();
 };
 
-const setInitialGlobalState = initialState => {
-  globalState = initialState;
-};
-
-export { getGlobalState, setGlobalState, setInitialGlobalState };
+export { setInitialGlobalState, getGlobalState, setGlobalState };
