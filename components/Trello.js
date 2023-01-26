@@ -8,6 +8,7 @@ import sanitizeHTML from '../utils/sanitizeHTML.js';
 class Trello extends Component {
   render() {
     const { lists, modal, isAddingList } = getGlobalState();
+
     // 조건부 렌더링 방식 -> 특정 이벤트 처리가 어려움(여러 이벤트가 등록되는 경우 이미 dom에서 사라진 경우가 존재)
     // return `
     //   <h1>
@@ -101,7 +102,7 @@ class Trello extends Component {
         },
       },
       {
-        type: 'click',
+        type: 'mousedown',
         selector: 'window',
         handler: e => {
           if (getGlobalState().isAddingList) {
