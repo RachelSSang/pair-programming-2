@@ -5,8 +5,8 @@ let globalState = {};
 
 const getGlobalState = () => globalState;
 
-const setGlobalState = newState => {
-  globalState = { ...globalState, ...newState };
+const setGlobalState = nextState => {
+  globalState = typeof nextState === 'function' ? nextState(globalState) : nextState;
   renderAll();
 };
 
