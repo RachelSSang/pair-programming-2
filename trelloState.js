@@ -216,6 +216,12 @@ const card = {
 
 const modal = {
   active(listId, cardId) {
+    document.addEventListener('keyup', e => {
+      if (e.key.toLowerCase().includes('escape')) this.inactive();
+    });
+    document.documentElement.style.overflow = 'hidden';
+    document.getElementById('root').setAttribute('aria-hidden', 'true');
+
     setGlobalState(beforeState => {
       const { modal } = beforeState;
       return { ...beforeState, modal: { ...modal, listId, cardId, isOpened: true } };
@@ -223,6 +229,12 @@ const modal = {
   },
 
   inactive() {
+    document.removeEventListener('keyup', e => {
+      if (e.key.toLowerCase().includes('escape')) this.inactive();
+    });
+    document.documentElement.style.overflow = 'visible';
+    document.getElementById('root').setAttribute('aria-hidden', 'false');
+
     setGlobalState(beforeState => {
       const { modal } = beforeState;
       return {
