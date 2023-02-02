@@ -4,6 +4,7 @@ import { getGlobalState } from '../library/globalState.js';
 import { list, card } from '../trelloState.js';
 import sanitizeHTML from '../utils/sanitizeHTML.js';
 
+let ghostNode = null;
 let draggingListId = null;
 let draggingCardId = null;
 let draggingCardListId = null;
@@ -13,6 +14,7 @@ const mouseDownPosition = { x: null, y: null };
 class List extends Component {
   render() {
     const { id, title, cards, isEditingTitle, isAddingCard } = this.props.list;
+
     return `
     <li data-list-id="${id}" class="list-item draggable-container">
       <div class="inner-list-item draggable">
@@ -115,10 +117,9 @@ class List extends Component {
         handler: e => {
           const targetId = +e.target.closest('.list-item').dataset.listId;
           const beforeTitle = list.getListById(targetId).title;
-          const newTitle =
-            e.target.value.trim() === '' || e.target.value === beforeTitle ? beforeTitle : e.target.value;
-          list.changeTitle(targetId, sanitizeHTML(newTitle));
+          const newTitle = e.target.value.trim() === '' ? beforeTitle : e.target.value;
           list.inactiveIsEditingTitle(targetId);
+          list.changeTitle(targetId, sanitizeHTML(newTitle));
         },
       },
       {
@@ -149,13 +150,9 @@ class List extends Component {
         type: 'mousedown',
         selector: '.draggable',
         handler: e => {
-          const ghostNode = e.target.closest('.draggable').cloneNode(true);
-          ghostNode.classList.add('ghost');
-          ghostNode.style.display = 'none';
-          document.body.appendChild(ghostNode);
-          if (ghostNode.matches('.inner-list-item')) {
+          if (e.target.closest('.draggable').matches('.inner-list-item')) {
             draggingListId = +e.target.closest('.draggable-container').dataset.listId;
-          } else if (ghostNode.matches('.card-item')) {
+          } else if (e.target.closest('.draggable').matches('.card-item')) {
             draggingCardId = +e.target.closest('.draggable').dataset.cardId;
             draggingCardListId = +e.target.closest('.list-item').dataset.listId;
           }
@@ -176,8 +173,12 @@ class List extends Component {
 
           if (Math.abs(mouseDownPosition.x - e.pageX) + Math.abs(mouseDownPosition.y - e.pageY) < 3) return;
 
-          const ghostNode = document.querySelector('.ghost');
-          ghostNode.style.display = 'block';
+          if (!ghostNode) {
+            ghostNode = e.target.closest('.draggable').cloneNode(true);
+            ghostNode.classList.add('ghost');
+            document.body.appendChild(ghostNode);
+          }
+
           ghostNode.style.left = e.pageX - relativeMouseDownPosition.x + 'px';
           ghostNode.style.top = e.pageY - relativeMouseDownPosition.y + 'px';
 
@@ -230,8 +231,8 @@ class List extends Component {
         selector: 'window',
         handler: () => {
           if (!draggingListId && !draggingCardId) return;
-          const ghostNode = document.querySelector('.ghost');
-          document.body.removeChild(ghostNode);
+          ghostNode && document.body.removeChild(ghostNode);
+          ghostNode = null;
 
           draggingListId = null;
           draggingCardId = null;
