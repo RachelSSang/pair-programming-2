@@ -1,22 +1,19 @@
 {
-  "name": "triple-i",
+  "name": "vanilla-trello",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/eunoo1995/Triple-I.git"
+    "url": "git+https://github.com/RachelSSang/pair-programming-2.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/eunoo1995/Triple-I/issues"
+    "url": "https://github.com/RachelSSang/pair-programming-2/issues"
   },
-  "homepage": "https://github.com/eunoo1995/Triple-I#readme",
+  "homepage": "https://github.com/RachelSSang/pair-programming-2",
   "devDependencies": {
     "@babel/core": "^7.19.0",
     "@babel/eslint-parser": "^7.18.9",
