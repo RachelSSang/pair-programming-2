@@ -25,12 +25,21 @@ class List extends Component {
         }
         <ul class="card-container">
           ${cards.map(card => new Card({ card }).render()).join('')}
-          <li class="add-card-wrapper ${isAddingCard ? '' : 'hidden'}">
-            <textarea placeholder="Enter a title for this card..." autofocus class="add-card-input"></textarea>
-            <button class="save-add-card-btn">Add card</button>
-            <button class="cancle-add-card-btn"><box-icon name="x"></box-icon></button>
-          </li>
-          <li><button class="add-card-btn ${isAddingCard ? 'hidden' : ''}" >+ Add a card</button></li> 
+          ${
+            isAddingCard
+              ? `
+              <li class="add-card-wrapper">
+                <textarea placeholder="Enter a title for this card..." autofocus class="add-card-input"></textarea>
+                <button class="save-add-card-btn">Add card</button>
+                <button class="cancle-add-card-btn">
+                  <box-icon name="x"></box-icon>
+                </button>
+              </li>`
+              : `
+              <li>
+                <button class="add-card-btn">+ Add a card</button>
+              </li>`
+          }    
         </ul>
         <button class="remove-list-btn"><box-icon name='x'></box-icon></button>
       </div>
@@ -60,12 +69,13 @@ class List extends Component {
         type: 'click',
         selector: '.add-card-btn',
         handler: e => {
+          const cardContainer = e.target.closest('.card-container');
           const targetId = +e.target.closest('.list-item').dataset.listId;
           getGlobalState()
             .lists.filter(({ id }) => id !== targetId)
             .forEach(({ id }) => list.inactiveAddingCard(id));
           list.activeAddingCard(targetId);
-          e.target.closest('.card-container').querySelector('.add-card-input').focus();
+          cardContainer.querySelector('.add-card-input').focus();
         },
       },
       {

@@ -9,27 +9,6 @@ class Trello extends Component {
   render() {
     const { lists, modal, isAddingList } = getGlobalState();
 
-    // 조건부 렌더링 방식 -> 특정 이벤트 처리가 어려움(여러 이벤트가 등록되는 경우 이미 dom에서 사라진 경우가 존재)
-    // return `
-    //   <h1>
-    //     <box-icon name="trello" type="logo" size="sm" color="#ffffff" flip="vertical"></box-icon>
-    //     Trello
-    //   </h1>
-    //   <ul class="list-container">
-    //     ${lists.map(list => new List({ list }).render()).join('')}
-    //     ${
-    //       isAddingList
-    //         ? `<li class="add-list-wrapper">
-    //             <textarea placeholder="Enter list title..." autofocus class="add-list-input"></textarea>
-    //             <button class="save-add-list-btn">Add list</button>
-    //             <button class="cancle-add-list-btn"><i class='bx bx-x'></i></button>
-    //           </li>`
-    //         : `<li><button class="add-list-btn">+ Add ${lists.length ? 'another' : 'a'} list</button></li>`
-    //     }
-    //   </ul>
-    //   ${modal.isOpened ? new Modal().render() : ''}
-    // `;
-
     return `
       <h1 class="title">
         <box-icon name="trello" type="logo" size="sm" color="#ffffff"></box-icon>
@@ -39,14 +18,19 @@ class Trello extends Component {
       
       <ul class="list-container">
         ${lists.map(list => new List({ list }).render()).join('')}
-        <li class="add-list-wrapper ${isAddingList ? '' : 'hidden'}">
-          <textarea placeholder="Enter list title..." autofocus class="add-list-input"></textarea>
-          <button class="save-add-list-btn">Add list</button>
-          <button class="cancle-add-list-btn"><box-icon name="x"></box-icon></button>
-        </li>
-        <li><button class="add-list-btn ${isAddingList ? 'hidden' : ''}">+ Add ${
-      lists.length ? 'another' : 'a'
-    } list</button></li>
+        ${
+          isAddingList
+            ? `
+            <li class="add-list-wrapper">
+              <textarea placeholder="Enter list title..." autofocus class="add-list-input"></textarea>
+              <button class="save-add-list-btn">Add list</button>
+              <button class="cancle-add-list-btn"><box-icon name="x"></box-icon></button>
+            </li>`
+            : `
+            <li>
+              <button class="add-list-btn">+ Add ${lists.length ? 'another' : 'a'} list</button>
+            </li>`
+        }
       </ul>
       ${modal.isOpened ? new Modal().render() : ''}
     `;
@@ -63,8 +47,9 @@ class Trello extends Component {
         type: 'click',
         selector: '.add-list-btn',
         handler: e => {
+          const listContainer = e.target.closest('.list-container');
           trello.activeAddingList();
-          e.target.closest('.list-container').querySelector('.add-list-input').focus();
+          listContainer.querySelector('.add-list-input').focus();
         },
       },
       {

@@ -23,52 +23,23 @@ class Modal extends Component {
         <div class="modal-description-section">
           <box-icon name="list-minus"></box-icon>
           <h4>Description</h4>
-          <p class="alert-msg hidden">Save your canges!</p>
-          <div class="${isEditingDescription ? '' : 'hidden'} modal-description-wrapper">
-            <textarea row="4" placeholder="Add a more detailed description..." class="modal-description-input">${
-              targetCard?.description
-            }</textarea>
-            <button class="save-modal-description-btn">Save</button>
-            <button class="cancle-modal-description-btn"><box-icon name="x"></box-icon></button>
-          </div>
-          <p class="${isEditingDescription ? 'hidden' : ''} modal-description">${
-      targetCard?.description === '' ? 'Add a more detailed description...' : targetCard?.description
-    }</p>
+          <p class="alert-msg hidden">Save your changes!</p>
+          ${
+            isEditingDescription
+              ? `
+              <div class="modal-description-wrapper">
+                <textarea row="4" placeholder="Add a more detailed description..." class="modal-description-input">${targetCard?.description}</textarea>
+                <button class="save-modal-description-btn">Save</button>
+                <button class="cancle-modal-description-btn"><box-icon name="x"></box-icon></button>
+              </div>`
+              : `<p class="modal-description">${
+                  targetCard?.description === '' ? 'Add a more detailed description...' : targetCard?.description
+                }</p>`
+          }
         </div>
         <button class="close-modal-btn"><box-icon name="x"></box-icon></button>
       </section>
     </div>`;
-    // return `<div class="modal-wrapper">
-    //   <section class="modal">
-    //     <div class="modal-card-title">
-    //       <box-icon name="window"></box-icon>
-    //       ${
-    //         isEditingTitle
-    //           ? `<textarea autofocus class="modal-title-input">${targetCard?.title}</textarea>`
-    //           : `<h2 class="modal-title">${targetCard?.title}</h2>`
-    //       }
-    //       <p class="modal-list-title">in list <span>${targetList?.title}</span></p>
-    //     </div>
-    //     <div class="modal-card-description">
-    //       <box-icon name="list-minus"></box-icon>
-    //       <h4>Description</h4>
-    //       ${
-    //         isEditingDescription
-    //           ? `<form class="edit-description-form">
-    //                 <textarea row="4" placeholder="Add a more detailed description..." class="modal-description-textarea">${targetCard?.description}</textarea>
-    //                 <div class="button-container">
-    //                   <button type="submit">Save</button>
-    //                   <button class="close-description-form-btn"><box-icon name="x"></box-icon></button>
-    //                 </div>
-    //               </form>`
-    //           : `<p class="modal-description">${
-    //               targetCard?.description === '' ? 'Add a more detailed description...' : targetCard?.description
-    //             }</p>`
-    //       }
-    //     </div>
-    //     <button class="close-modal-btn"><box-icon name="x"></box-icon></button>
-    //   </section>
-    // </div>`;
   }
 
   addEvents() {

@@ -9,7 +9,6 @@ class Card extends Component {
     <li data-card-id="${id}" class="card-item draggable">    
       <h3 class="card-title">${title}</h3>
       ${description ? `<box-icon name="signal-3" rotate="90"></box-icon>` : ''}
-      <box-icon class="hidden" name="pencil"></box-icon>
       <button class="remove-card-btn"><box-icon name="x"></box-icon></button>
     </li>
     `;
