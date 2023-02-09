@@ -18,12 +18,12 @@ class Modal extends Component {
               ? `<textarea autofocus class="modal-title-input">${targetCard?.title}</textarea>`
               : `<h3 class="modal-title">${targetCard?.title}</h3>`
           }
-          <p class="modal-list-title">in list <span>${targetList?.title}</span></p>
+          <p class="modal-list-title">in <span>${targetList?.title}</span></p>
         </div>
         <div class="modal-description-section">
           <box-icon name="list-minus"></box-icon>
           <h4>Description</h4>
-          <p class="alert-msg hidden">Save your changes!</p>
+          <p class="alert-msg">Save your changes!</p>
           ${
             isEditingDescription
               ? `
@@ -32,9 +32,11 @@ class Modal extends Component {
                 <button class="save-modal-description-btn">Save</button>
                 <button class="cancle-modal-description-btn"><box-icon name="x"></box-icon></button>
               </div>`
-              : `<p class="modal-description">${
-                  targetCard?.description === '' ? 'Add a more detailed description...' : targetCard?.description
-                }</p>`
+              : `${
+                  targetCard?.description === ''
+                    ? `<p class="modal-description placeholder">Add a more detailed description...</p>`
+                    : `<p class="modal-description">${targetCard?.description}</p>`
+                }`
           }
         </div>
         <button class="close-modal-btn"><box-icon name="x"></box-icon></button>
@@ -105,6 +107,7 @@ class Modal extends Component {
         selector: '.cancle-modal-description-btn',
         handler: () => {
           modal.inactiveIsEditingDescription();
+          document.querySelector('.modal-description-section .alert-msg').style.display = 'none';
         },
       },
       {
@@ -117,6 +120,7 @@ class Modal extends Component {
             .querySelector('.modal-description-input').value;
           card.changeDescription(listId, cardId, sanitizeHTML(newDescription));
           modal.inactiveIsEditingDescription();
+          document.querySelector('.modal-description-section .alert-msg').style.display = 'none';
         },
       },
       {
@@ -147,6 +151,7 @@ class Modal extends Component {
             return;
           }
           e.target.closest('.modal').querySelector('.modal-description-input').focus();
+          document.querySelector('.modal-description-section .alert-msg').style.display = 'inline-block';
         },
       },
       {
@@ -154,12 +159,16 @@ class Modal extends Component {
         selector: '.modal-wrapper',
         handler: e => {
           if (e.target.matches('.modal-wrapper')) {
-            if (getGlobalState().modal.isEditingDescription) e.target.querySelector('.modal-description-input').focus();
-            else modal.inactive();
+            if (getGlobalState().modal.isEditingDescription) {
+              e.target.querySelector('.modal-description-input').focus();
+              document.querySelector('.modal-description-section .alert-msg').style.display = 'inline-block';
+            } else modal.inactive();
             return;
           }
           if (!getGlobalState().modal.isEditingDescription) return;
           e.target.closest('.modal').querySelector('.modal-description-input').focus();
+          if (!e.target.matches('.modal-description-input'))
+            document.querySelector('.modal-description-section .alert-msg').style.display = 'inline-block';
         },
       },
       // TODO: Escape 입력시 모달 창 닫기
@@ -169,12 +178,15 @@ class Modal extends Component {
         handler: e => {
           if (e.key !== 'Escape') return;
           if (e.target.matches('.modal-wrapper')) {
-            if (getGlobalState().modal.isEditingDescription) e.target.querySelector('.modal-description-input').focus();
-            else modal.inactive();
+            if (getGlobalState().modal.isEditingDescription) {
+              e.target.querySelector('.modal-description-input').focus();
+              document.querySelector('.modal-description-section .alert-msg').style.display = 'inline-block';
+            } else modal.inactive();
             return;
           }
           if (!getGlobalState().modal.isEditingDescription) return;
           e.target.closest('.modal').querySelector('.modal-description-input').focus();
+          document.querySelector('.modal-description-section .alert-msg').style.display = 'inline-block';
         },
       },
     ];

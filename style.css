@@ -15,10 +15,6 @@ body {
   user-select: none;
 }
 
-.hidden {
-  display: none;
-}
-
 .title {
   display: flex;
   align-items: center;
@@ -148,6 +144,11 @@ box-icon[name='signal-3'] {
   overflow: hidden;
 }
 
+.modal-description-input {
+  border: solid 2px lightgray;
+  margin-bottom: 0.3rem;
+}
+
 .add-list-input {
   padding: 0 1rem 0 0.5rem;
   margin-bottom: 0.5rem;
@@ -167,6 +168,17 @@ box-icon[name='signal-3'] {
   padding: 0 0.5rem;
   margin-bottom: 0.5rem;
   font-size: 1.5rem;
+}
+
+.modal-description-section h4 {
+  display: inline-block;
+}
+
+.modal-description-section .alert-msg {
+  padding-left: 1rem;
+  font-weight: 500;
+  color: rgb(219, 61, 61);
+  display: none;
 }
 
 .modal-description-input {
@@ -308,7 +320,7 @@ box-icon[name='signal-3'] {
 }
 
 .modal-list-title span {
-  text-decoration: underline;
+  font-weight: 700;
 }
 
 .modal-description {
@@ -318,7 +330,11 @@ box-icon[name='signal-3'] {
   min-height: 6rem;
   white-space: pre-wrap;
   word-break: break-all;
-  background-color: lightgray;
+  background-color: rgb(231, 231, 231);
+}
+
+.modal-description.placeholder {
+  color: gray;
 }
 
 .close-modal-btn {
