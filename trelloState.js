@@ -216,8 +216,14 @@ const card = {
 
 const modal = {
   active(listId, cardId) {
-    document.addEventListener('keyup', e => {
-      if (e.key.toLowerCase().includes('escape')) this.inactive();
+    document.addEventListener('keydown', e => {
+      console.log(getGlobalState().modal.isEditingTitle, getGlobalState().modal.isEditingDescription);
+      if (
+        e.key.toLowerCase().includes('escape') &&
+        !getGlobalState().modal.isEditingTitle &&
+        !getGlobalState().modal.isEditingDescription
+      )
+        this.inactive();
     });
     document.documentElement.style.overflow = 'hidden';
     document.getElementById('root').setAttribute('aria-hidden', 'true');
@@ -229,7 +235,7 @@ const modal = {
   },
 
   inactive() {
-    document.removeEventListener('keyup', e => {
+    document.removeEventListener('keydown', e => {
       if (e.key.toLowerCase().includes('escape')) this.inactive();
     });
     document.documentElement.style.overflow = 'visible';

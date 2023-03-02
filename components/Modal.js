@@ -74,6 +74,13 @@ class Modal extends Component {
         },
       },
       {
+        type: 'keypress',
+        selector: '.modal-title-input',
+        handler: e => {
+          if (e.key === 'Enter') e.preventDefault();
+        },
+      },
+      {
         type: 'input',
         selector: '.modal-title-input',
         handler: e => {
@@ -82,14 +89,13 @@ class Modal extends Component {
         },
       },
       {
-        type: 'keydown',
+        type: 'keyup',
         selector: '.modal-title-input',
         handler: e => {
           if (e.code !== 'Enter' && e.code !== 'Escape') return;
           e.target.blur();
         },
       },
-
       {
         type: 'click',
         selector: '.modal-description',
@@ -132,13 +138,12 @@ class Modal extends Component {
         },
       },
       {
-        type: 'keydown',
+        type: 'keyup',
         selector: '.modal-description-input',
         handler: e => {
-          if (e.isComposing || e.keyCode === 229) return;
-
           if (e.key === 'Escape') {
-            modal.inactiveIsEditingDescription();
+            e.target.closest('.modal').querySelector('.modal-description-input').focus();
+            document.querySelector('.modal-description-section .alert-msg').style.display = 'inline-block';
           }
         },
       },
@@ -169,24 +174,6 @@ class Modal extends Component {
           e.target.closest('.modal').querySelector('.modal-description-input').focus();
           if (!e.target.matches('.modal-description-input'))
             document.querySelector('.modal-description-section .alert-msg').style.display = 'inline-block';
-        },
-      },
-      // TODO: Escape 입력시 모달 창 닫기
-      {
-        type: 'keydown',
-        selector: '.modal-wrapper',
-        handler: e => {
-          if (e.key !== 'Escape') return;
-          if (e.target.matches('.modal-wrapper')) {
-            if (getGlobalState().modal.isEditingDescription) {
-              e.target.querySelector('.modal-description-input').focus();
-              document.querySelector('.modal-description-section .alert-msg').style.display = 'inline-block';
-            } else modal.inactive();
-            return;
-          }
-          if (!getGlobalState().modal.isEditingDescription) return;
-          e.target.closest('.modal').querySelector('.modal-description-input').focus();
-          document.querySelector('.modal-description-section .alert-msg').style.display = 'inline-block';
         },
       },
     ];
