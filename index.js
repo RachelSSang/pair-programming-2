@@ -1,5 +1,5 @@
-import render from './library/render.js';
+import renderAll from './library/renderAll.js';
 import App from './App.js';
 
 // initial rendering
-render(App, document.getElementById('root'));
+renderAll(App, document.getElementById('root'));

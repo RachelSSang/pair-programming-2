@@ -1,6 +1,6 @@
 import Component from './library/Component.js';
 import Trello from './components/Trello.js';
-import { setInitialState, getTrelloState } from './trelloState.js';
+import { setInitialGlobalState, setGlobalState, getGlobalState } from './library/globalState.js';
 
 class App extends Component {
   constructor(props) {
@@ -10,9 +10,9 @@ class App extends Component {
 
   init() {
     const localState = JSON.parse(localStorage.getItem('trelloState'));
-    if (localState) setInitialState(localState);
+    if (localState) setInitialGlobalState(localState);
     else
-      setInitialState({
+      setInitialGlobalState({
         lists: [],
         modal: { listId: null, cardId: null, isOpened: false, isEditingTitle: false, isEditingDescription: false },
         isAddingList: false,
@@ -23,21 +23,31 @@ class App extends Component {
     return `${new Trello().render()}`;
   }
 
-  addEventListener() {
+  addEvents() {
     return [
       {
         type: 'beforeunload',
         selector: 'window',
         handler: () => {
-          const newList = [
-            ...getTrelloState().lists.map(list => (list.isEditingTitle ? { ...list, isEditingTitle: false } : list)),
-          ];
-          const newTrelloState = {
-            ...getTrelloState(),
-            list: newList,
-            modal: { listId: null, cardId: null, isOpened: false, isEditingTitle: false, isEditingDescription: false },
-          };
-          localStorage.setItem('trelloState', JSON.stringify(newTrelloState));
+          setGlobalState(beforeState => {
+            const newList = [
+              ...beforeState.lists.map(list => ({ ...list, isEditingTitle: false, isAddingCard: false })),
+            ];
+            const newTrelloState = {
+              ...beforeState,
+              isAddingList: false,
+              lists: newList,
+              modal: {
+                listId: null,
+                cardId: null,
+                isOpened: false,
+                isEditingTitle: false,
+                isEditingDescription: false,
+              },
+            };
+            return newTrelloState;
+          });
+          localStorage.setItem('trelloState', JSON.stringify(getGlobalState()));
         },
       },
     ];

@@ -1,34 +1,49 @@
 import Component from '../library/Component.js';
 import Card from './Card.js';
-import { getTrelloState, list, card } from '../trelloState.js';
+import { getGlobalState } from '../library/globalState.js';
+import { list, card } from '../trelloState.js';
 import sanitizeHTML from '../utils/sanitizeHTML.js';
 
+let ghostNode = null;
 let draggingListId = null;
 let draggingCardId = null;
 let draggingCardListId = null;
+const relativeMouseDownPosition = { x: null, y: null };
 const mouseDownPosition = { x: null, y: null };
 const mouseDownClientPosition = { x: null, y: null };
 
 class List extends Component {
   render() {
     const { id, title, cards, isEditingTitle, isAddingCard } = this.props.list;
+
     return `
-    <li data-list-id="${id}" class="list-item draggable">
-      ${
-        isEditingTitle
-          ? `<textarea autofocus class="list-title-input">${title}</textarea>`
-          : `<h2 class="list-title">${title}</h2>`
-      }
-      <ul class="card-container">
-      ${cards.map(card => new Card({ card }).render()).join('')}
-      <li class="add-card-wrapper ${isAddingCard ? '' : 'hidden'}">
-      <textarea placeholder="Enter a title for this card..." autofocus class="add-card-input"></textarea>
-      <button class="save-add-card-btn">Add card</button>
-      <button class="cancle-add-card-btn"><box-icon name="x"></box-icon></button>
-      </li>
-      <li><button class="add-card-btn ${isAddingCard ? 'hidden' : ''}" >+ Add a card</button></li> 
-      </ul>
-      <button class="remove-list-btn"><box-icon name='x'></box-icon></button>
+    <li data-list-id="${id}" class="list-item draggable-container">
+      <div class="inner-list-item draggable">
+        ${
+          isEditingTitle
+            ? `<textarea autofocus class="list-title-input">${title}</textarea>`
+            : `<h2 class="list-title">${title}</h2>`
+        }
+        <ul class="card-container">
+          ${cards.map(card => new Card({ card }).render()).join('')}
+          ${
+            isAddingCard
+              ? `
+              <li class="add-card-wrapper">
+                <textarea placeholder="Enter a title for this card..." autofocus class="add-card-input"></textarea>
+                <button class="save-add-card-btn">Add card</button>
+                <button class="cancle-add-card-btn">
+                  <box-icon name="x"></box-icon>
+                </button>
+              </li>`
+              : `
+              <li>
+                <button class="add-card-btn">+ Add a card</button>
+              </li>`
+          }    
+        </ul>
+        <button class="remove-list-btn"><box-icon name='x'></box-icon></button>
+      </div>
     </li>`;
   }
 
@@ -37,7 +52,7 @@ class List extends Component {
     document.querySelector(`.list-item[data-list-id="${targetListId}"] .add-card-input`).focus();
   }
 
-  addEventListener() {
+  addEvents() {
     return [
       {
         type: 'click',
@@ -55,12 +70,13 @@ class List extends Component {
         type: 'click',
         selector: '.add-card-btn',
         handler: e => {
+          const cardContainer = e.target.closest('.card-container');
           const targetId = +e.target.closest('.list-item').dataset.listId;
-          getTrelloState()
+          getGlobalState()
             .lists.filter(({ id }) => id !== targetId)
             .forEach(({ id }) => list.inactiveAddingCard(id));
           list.activeAddingCard(targetId);
-          e.target.closest('.card-container').querySelector('.add-card-input').focus();
+          cardContainer.querySelector('.add-card-input').focus();
         },
       },
       {
@@ -112,10 +128,9 @@ class List extends Component {
         handler: e => {
           const targetId = +e.target.closest('.list-item').dataset.listId;
           const beforeTitle = list.getListById(targetId).title;
-          const newTitle =
-            e.target.value.trim() === '' || e.target.value === beforeTitle ? beforeTitle : e.target.value;
-          list.changeTitle(targetId, sanitizeHTML(newTitle));
+          const newTitle = e.target.value.trim() === '' ? beforeTitle : e.target.value;
           list.inactiveIsEditingTitle(targetId);
+          list.changeTitle(targetId, sanitizeHTML(newTitle));
         },
       },
       {
@@ -146,24 +161,19 @@ class List extends Component {
         type: 'mousedown',
         selector: '.draggable',
         handler: e => {
-          const ghostNode = e.target.closest('.draggable').cloneNode(true);
-          ghostNode.classList.add('ghost');
-          ghostNode.style.display = 'none';
-          document.body.appendChild(ghostNode);
-
-          if (ghostNode.matches('.list-item')) {
-            draggingListId = +e.target.closest('.draggable').dataset.listId;
-          } else if (ghostNode.matches('.card-item')) {
+          if (e.target.closest('.draggable').matches('.inner-list-item')) {
+            draggingListId = +e.target.closest('.draggable-container').dataset.listId;
+          } else if (e.target.closest('.draggable').matches('.card-item')) {
             draggingCardId = +e.target.closest('.draggable').dataset.cardId;
             draggingCardListId = +e.target.closest('.list-item').dataset.listId;
           }
 
-          mouseDownPosition.x =
+          relativeMouseDownPosition.x =
             e.offsetX - e.target.closest('.draggable').getBoundingClientRect().x + e.target.getBoundingClientRect().x;
-          mouseDownPosition.y =
+          relativeMouseDownPosition.y =
             e.offsetY - e.target.closest('.draggable').getBoundingClientRect().y + e.target.getBoundingClientRect().y;
-          mouseDownClientPosition.x = e.clientX;
-          mouseDownClientPosition.y = e.clientY;
+          mouseDownPosition.x = e.pageX;
+          mouseDownPosition.y = e.pageY;
         },
       },
       {
@@ -172,13 +182,16 @@ class List extends Component {
         handler: e => {
           if (!draggingListId && !draggingCardId) return;
 
-          if (Math.abs(mouseDownClientPosition.x - e.clientX) + Math.abs(mouseDownClientPosition.y - e.clientY) < 3)
-            return;
+          if (Math.abs(mouseDownPosition.x - e.pageX) + Math.abs(mouseDownPosition.y - e.pageY) < 3) return;
 
-          const ghostNode = document.querySelector('.ghost');
-          ghostNode.style.display = 'block';
-          ghostNode.style.left = e.pageX - mouseDownPosition.x + 'px';
-          ghostNode.style.top = e.pageY - mouseDownPosition.y + 'px';
+          if (!ghostNode) {
+            ghostNode = e.target.closest('.draggable').cloneNode(true);
+            ghostNode.classList.add('ghost');
+            document.body.appendChild(ghostNode);
+          }
+
+          ghostNode.style.left = e.pageX - relativeMouseDownPosition.x + 'px';
+          ghostNode.style.top = e.pageY - relativeMouseDownPosition.y + 'px';
 
           let hoveredListId = null;
           let hoveredCardId = null;
@@ -229,8 +242,8 @@ class List extends Component {
         selector: 'window',
         handler: () => {
           if (!draggingListId && !draggingCardId) return;
-          const ghostNode = document.querySelector('.ghost');
-          document.body.removeChild(ghostNode);
+          ghostNode && document.body.removeChild(ghostNode);
+          ghostNode = null;
 
           draggingListId = null;
           draggingCardId = null;

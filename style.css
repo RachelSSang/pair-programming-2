@@ -12,14 +12,7 @@ body {
   height: 100%;
   color: #121f3d;
   background-color: #0b64b2;
-}
-
-#root {
-  height: calc(100vh - 3.5rem);
-}
-
-.hidden {
-  display: none;
+  user-select: none;
 }
 
 .title {
@@ -40,12 +33,14 @@ h1 > box-icon {
 }
 
 .subtitle {
-  display: flex;
-  align-items: center;
+  height: 2.5rem;
   padding: 0 0 1rem 2rem;
   font-size: 1.3rem;
   color: #ffffff;
   background-color: #0d508e;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 ul {
@@ -74,6 +69,8 @@ box-icon[name='signal-3'] {
 }
 
 .list-container {
+  min-height: calc(100vh - 6rem);
+  height: fit-content;
   display: flex;
   flex-direction: row;
   padding: 1.5rem;
@@ -81,6 +78,10 @@ box-icon[name='signal-3'] {
 }
 
 .list-item {
+  border-radius: 0.2rem;
+}
+
+.inner-list-item {
   display: flex;
   flex-direction: column;
   position: relative;
@@ -117,6 +118,7 @@ box-icon[name='signal-3'] {
 
 .add-list-wrapper {
   padding: 0.8rem;
+  max-width: 20rem;
   min-width: 20rem;
   border-radius: 0.2rem;
   background-color: lightgray;
@@ -142,6 +144,11 @@ box-icon[name='signal-3'] {
   overflow: hidden;
 }
 
+.modal-description-input {
+  border: solid 2px lightgray;
+  margin-bottom: 0.3rem;
+}
+
 .add-list-input {
   padding: 0 1rem 0 0.5rem;
   margin-bottom: 0.5rem;
@@ -161,6 +168,17 @@ box-icon[name='signal-3'] {
   padding: 0 0.5rem;
   margin-bottom: 0.5rem;
   font-size: 1.5rem;
+}
+
+.modal-description-section h4 {
+  display: inline-block;
+}
+
+.modal-description-section .alert-msg {
+  padding-left: 1rem;
+  font-weight: 500;
+  color: rgb(219, 61, 61);
+  display: none;
 }
 
 .modal-description-input {
@@ -302,7 +320,7 @@ box-icon[name='signal-3'] {
 }
 
 .modal-list-title span {
-  text-decoration: underline;
+  font-weight: 700;
 }
 
 .modal-description {
@@ -312,7 +330,11 @@ box-icon[name='signal-3'] {
   min-height: 6rem;
   white-space: pre-wrap;
   word-break: break-all;
-  background-color: lightgray;
+  background-color: rgb(231, 231, 231);
+}
+
+.modal-description.placeholder {
+  color: gray;
 }
 
 .close-modal-btn {
@@ -324,6 +346,7 @@ box-icon[name='signal-3'] {
 .dragging {
   background-color: rgba(0, 0, 0, 0.1);
   box-shadow: none;
+  height: fit-content;
 }
 
 .dragging * {
